@@ -1,13 +1,87 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+	--z-index-modal-level: 10;
+	--z-index-alert-level: 11;
+	--z-index-profile-modal-level: 9;
+	--z-index-card-level-2: 8;
+	--z-index-card-level-1: 7;
+	--z-index-card-level-0: 6;
+	--z-index-low-level-1: 5;
+	--z-index-low-level-2: 4;
+}
+.app {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 8rem 1fr 5rem;
+	grid-template-areas:
+		'navbar'
+		'main-content'
+		'footer';
+	margin: auto;
+	min-height: 100vh;
+	max-height: 100%;
+	width: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.modal-opened {
+	z-index: var(--z-index-modal-level);
+}
+
+.app-main-content {
+	position: relative;
+	grid-area: main-content;
+}
+
+.app-footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-area: footer;
+}
+
+.btn-link {
+	cursor: pointer;
+}
+
+.width-100 {
+	width: 100%;
+}
+
+.not-selectable {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.btn-fab {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 5rem;
+	border: 1px solid transparent;
+	padding: 1rem;
+	cursor: pointer;
+	aspect-ratio: unset;
+}
+
+@media screen and (max-width: 768px) {
+	.btn-fab > p {
+		display: none;
+	}
+
+	.app {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 14rem 1fr 5rem;
+		grid-template-areas:
+			'navbar'
+			'main-content '
+			'footer  ';
+		margin: auto;
+		min-height: 100vh;
+		width: 100%;
+		max-width: 170rem;
+	}
 }

@@ -1,0 +1,156 @@
+.navbar {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.navbar-brand {
+	margin: 0 2rem;
+	max-width: 100%;
+	color: var(--colour-text-white);
+	font-size: calc(2.2rem + 0.9vw);
+	font-weight: 500;
+}
+
+.navbar .text-field {
+	margin: 2rem;
+	width: 100%;
+	height: 4.5rem;
+	font-size: calc(1.2rem + 0.9vw);
+	font-weight: 500;
+}
+
+.navbar-cta {
+	padding: 2rem;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 2rem;
+	max-width: 100%;
+}
+
+.navbar-cta svg {
+	display: flex;
+	justify-content: center;
+}
+
+.navbar-cta img {
+	flex-shrink: 0;
+}
+
+.navbar-cta > *:hover {
+	transform: translateY(-2px);
+	cursor: pointer;
+	color: var(--colour-primary);
+}
+
+.navbar-cta > *:hover:last-child {
+	transform: none;
+	cursor: pointer;
+	color: var(--colour-primary);
+}
+
+.navbar-cta .badge-holder img {
+	flex-shrink: 0;
+}
+
+.header-icon {
+	color: var(--colour-text-white);
+}
+
+.header-icon:hover {
+	cursor: pointer;
+	color: var(--colour-primary);
+}
+
+.profile-modal-holder {
+	position: relative;
+	flex-shrink: 0;
+}
+
+.profile-modal {
+	display: none;
+	position: absolute;
+	width: 15rem;
+	padding: 1rem;
+	right: 0;
+	background-color: var(--colour-accent-third);
+	margin-top: 1rem;
+	z-index: var(--z-index-profile-modal-level);
+	color: var(--colour-text-white-two);
+	border-radius: 1rem;
+	transition: all 0.3s ease-in-out;
+}
+
+.profile-modal::before {
+	content: '';
+	position: absolute;
+	top: -1.8rem;
+	right: 1rem;
+	margin-left: -5px;
+	border-width: 10px;
+	border-style: solid;
+	border-color: transparent transparent var(--colour-accent-third) transparent;
+}
+
+.profile-modal > * {
+	margin: 5px;
+	border-radius: 5px;
+	transition: all 0.3s ease-in-out;
+}
+
+.profile-modal li {
+	color: var(--both-theme-white);
+}
+
+.profile-modal li:hover {
+	padding-left: 5px;
+	background-color: var(--colour-accent-third-with-opacity);
+}
+
+.profile-modal-holder:hover .profile-modal {
+	display: block;
+}
+
+.navbar-mobile {
+	width: 100%;
+	flex-direction: row;
+	transition: all 0.3s ease-in-out;
+	grid-area: navbar;
+}
+
+@media screen and (max-width: 768px) {
+	.navbar-mobile {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		transition: all 0.3s ease-in-out;
+	}
+	.navbar-mobile .text-field {
+		display: none;
+	}
+	.navbar-mobile .mobile-searchbar {
+		display: block;
+	}
+	.navbar-mobile .navbar-cta .badge-holder {
+		display: none;
+	}
+
+	/* !TODO Commented to fix an issue */
+	/* .navbar-mobile .profile-modal > *:hover > *:parent {
+		display: none;
+	} */
+}
+
+@media screen and (min-width: 768px) {
+	.navbar-mobile .text-field {
+		display: block;
+	}
+	.navbar-mobile .mobile-searchbar {
+		display: none;
+	}
+	.navbar-mobile .navbar-cta .badge-holder {
+		display: block;
+	}
+}
