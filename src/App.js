@@ -1,10 +1,11 @@
 import { Footer, Navbar } from './Components';
+import { AppRoutes } from './Components/Router/Router';
 import './index.css';
 function App() {
 	return (
 		<div className='app'>
 			<Navbar />
-			<div className='app-main-content'></div>
+			<AppRoutes />
 			<Footer />
 		</div>
 	);

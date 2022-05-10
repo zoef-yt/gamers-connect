@@ -1,7 +1,11 @@
-import { ThemeProvider } from './index';
+import { ThemeProvider, UserProvider } from './index';
 
 const Providers = ({ children }) => {
-	return <ThemeProvider>{children}</ThemeProvider>;
+	return (
+		<ThemeProvider>
+			<UserProvider>{children}</UserProvider>
+		</ThemeProvider>
+	);
 };
 
 export { Providers };
