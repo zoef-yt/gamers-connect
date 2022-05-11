@@ -1,3 +1,4 @@
+@import './Pages/ProfilePage/ProfilePage.css';
 :root {
 	--z-index-modal-level: 10;
 	--z-index-alert-level: 11;

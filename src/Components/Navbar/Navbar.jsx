@@ -29,10 +29,10 @@ const Navbar = () => {
 				</div>
 			</nav>
 			<aside className={`sidebar ${isSideBarOpen && 'sidebar-opened'}`}>
-				<SideBarItem close={closeSideBar} icon={<HomeIcon />} text='Home' />
-				<SideBarItem close={closeSideBar} icon={<ExploreIcon />} text='Explore' />
-				<SideBarItem close={closeSideBar} icon={<BookmarksIcon />} text='Bookmark' />
-				<SideBarItem close={closeSideBar} icon={<MultipleHeartIcon />} text='Liked' />
+				<SideBarItem close={closeSideBar} icon={<HomeIcon />} text='Home' navigateTo='/' />
+				<SideBarItem close={closeSideBar} icon={<ExploreIcon />} text='Explore' navigateTo='/explore' />
+				<SideBarItem close={closeSideBar} icon={<BookmarksIcon />} text='Bookmark' navigateTo='/bookmark' />
+				<SideBarItem close={closeSideBar} icon={<MultipleHeartIcon />} text='Liked' navigateTo='/likes' />
 				<SideBarItem close={closeSideBar} icon={<ProfileIcon />} text='Profile' navigateTo='/my-profile' />
 
 				<div onClick={toggleTheme} className='sidebar-item'>
