@@ -31,7 +31,6 @@
 	height: 14rem;
 	border-radius: 50%;
 	display: block;
-	background-color: rebeccapurple;
 }
 
 .user-info {
@@ -83,6 +82,7 @@
 	margin-top: 2rem;
 	padding-top: 1rem;
 	display: flex;
+	overflow: hidden;
 }
 
 .single-user-post {
@@ -95,6 +95,26 @@
 	padding: 2rem 2rem 0 2rem;
 	transition: all 0.4s ease-in-out;
 	border-radius: 1rem;
+	opacity: 0;
+	animation-name: card-animation;
+	animation-duration: 300ms;
+	animation-fill-mode: forwards;
+	animation-delay: var(--delay);
+}
+
+@keyframes card-animation {
+	0% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+	50% {
+		opacity: 0.8;
+		transform: translateX(-5%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 
 .single-user-post-comments-opened {

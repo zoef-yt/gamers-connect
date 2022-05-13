@@ -1,0 +1,88 @@
+.form {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.form-active {
+	animation-name: form-active;
+	animation-duration: 300ms;
+	animation-fill-mode: forwards;
+}
+
+.form-out {
+	animation-name: form-out;
+	animation-duration: 300ms;
+	animation-fill-mode: forwards;
+}
+
+.input-group .text-field {
+	margin: 8px 0;
+	width: 30rem;
+}
+
+[class*='password'] + .text-field {
+	width: 27rem;
+}
+
+.password-icon {
+	cursor: pointer;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.password-icon:hover {
+	color: var(--colour-primary);
+}
+
+.google-btn {
+	margin: 2rem 0;
+	width: 100%;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	gap: 1rem;
+	box-shadow: var(--box-shadow-level-1);
+}
+
+.google-btn:hover {
+	box-shadow: var(--box-shadow-level-2);
+}
+
+@keyframes form-active {
+	0% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+	80% {
+		opacity: 1;
+		transform: translateX(-5%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes form-out {
+	0% {
+		opacity: 1;
+		transform: translateX(0%);
+	}
+	20% {
+		opacity: 20%;
+		transform: translateX(5%);
+	}
+	100% {
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+}

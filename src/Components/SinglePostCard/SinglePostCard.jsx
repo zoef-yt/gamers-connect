@@ -2,14 +2,20 @@ import { useState } from 'react';
 import { BookMarkedIcon, BookmarkOutlineIcon, CommentsIcon, HeartFilledIcon, HeartOutlineIcon } from '../../Assets/AllSVG';
 import { AllPostComments } from './AllPostComments';
 
-const SinglePostCard = ({ photoUrl, displayName, post, timestamp, isBookMarked = false, isLiked = false }) => {
+const SinglePostCard = ({ photoUrl, displayName, post, timestamp, isBookMarked = false, isLiked = false, index = 0 }) => {
 	const [commentSection, setCommentSection] = useState(false);
 	const openComments = () => setCommentSection(true);
 	const closeComments = () => setCommentSection(false);
+	const getDelay = (index) => {
+		const delay = 150,
+			maxDelay = 700;
+
+		return `${index * delay < maxDelay ? index * delay : maxDelay}ms`;
+	};
 
 	return (
-		<div className={`single-user-post ${commentSection && 'single-user-post-comments-opened'}`}>
-			{!isBookMarked ? <BookmarkOutlineIcon className='bookmark-icon' /> : <BookMarkedIcon className='bookmarked-icon' />}
+		<div className={`single-user-post ${commentSection && 'single-user-post-comments-opened'}`} style={{ '--delay': getDelay(index) }}>
+			{isBookMarked ? <BookMarkedIcon className='bookmarked-icon' /> : <BookmarkOutlineIcon className='bookmark-icon' />}
 
 			<div className='post-header'>
 				<img src={photoUrl} alt={displayName} />
@@ -21,7 +27,7 @@ const SinglePostCard = ({ photoUrl, displayName, post, timestamp, isBookMarked =
 
 			<div className='post-cta'>
 				<div className='cta-button'>
-					{!isLiked ? <HeartOutlineIcon /> : <HeartFilledIcon style={{ fill: 'red', color: 'red' }} />}
+					{isLiked ? <HeartFilledIcon style={{ fill: 'red', color: 'red' }} /> : <HeartOutlineIcon />}
 					<p>60 likes</p>
 				</div>
 				<div onClick={openComments} className='cta-button'>
