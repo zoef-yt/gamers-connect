@@ -106,7 +106,7 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 			>
 				{isLoading ? 'Loading...' : 'SignUp'}
 			</button>
-			{error.hasError && <p className='modal-error'> *{error.errorMessage} </p>}
+			{error.hasError && <p className='error-text'> *{error.errorMessage} </p>}
 			<button onClick={switchAuthMode} className=' btn-link btn'>
 				Already have account? Log In!
 			</button>

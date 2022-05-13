@@ -84,7 +84,7 @@ const LoginComponent = ({ className, setUserDetails, textFields, showPassword, t
 			<button onClick={() => (!isLoading ? loginHandler() : null)} className={`btn modal-button ${isLoading ? 'btn-disabled' : 'btn-primary'}`}>
 				{isLoading ? 'Loading...' : 'Login'}
 			</button>
-			{error.hasError && <p className='modal-error'> *{error.errorMessage} </p>}
+			{error.hasError && <p className='error-text'> *{error.errorMessage} </p>}
 			<button onClick={switchAuthMode} className='btn-link btn'>
 				Don't have account? Sign up!
 			</button>

@@ -53,6 +53,11 @@
 	box-shadow: var(--box-shadow-level-1);
 }
 
+.error-text {
+	color: var(--colour-error);
+	font-weight: bold;
+	margin: 1rem 0;
+}
 .google-btn:hover {
 	box-shadow: var(--box-shadow-level-2);
 }
