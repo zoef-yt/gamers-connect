@@ -89,16 +89,44 @@
 	overflow-x: hidden;
 	position: relative;
 	width: 100%;
-	min-height: 20rem;
-	margin: 1rem auto;
+	min-height: 15rem;
+	margin: 2rem auto;
 	background-color: var(--colour-secondary-second);
-	padding: 2rem;
+	padding: 2rem 2rem 0 2rem;
 	transition: all 0.4s ease-in-out;
 	border-radius: 1rem;
 }
 
-.user-posts .single-user-post-comments-opened {
+.single-user-post-comments-opened {
 	min-height: 60rem;
+}
+
+.bookmark-icon {
+	top: -5rem;
+	right: 1rem;
+	position: absolute;
+
+	cursor: pointer;
+	z-index: 1;
+	transition: all 0.2s ease-in-out;
+}
+
+.single-user-post:hover .bookmark-icon {
+	top: 0;
+}
+
+.bookmark-icon:hover {
+	color: var(--colour-accent-third);
+}
+
+.bookmarked-icon {
+	top: 0;
+	right: 1rem;
+	position: absolute;
+	cursor: pointer;
+	z-index: 1;
+	transition: all 0.2s ease-in-out;
+	color: var(--colour-accent-third);
 }
 
 .user-post-comments-container {
@@ -109,7 +137,7 @@
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	background-color: var(--colour-black-fourth);
+	background-color: var(--colour-black-third);
 	border-radius: 1rem;
 	transition: all 0.4s ease-in-out;
 	padding: 2rem 1rem;

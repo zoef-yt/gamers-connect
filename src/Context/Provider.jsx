@@ -1,9 +1,13 @@
-import { ThemeProvider, UserProvider } from './index';
+import { ThemeProvider, UserProvider, LikedProvider, BookmarkProvider } from './index';
 
 const Providers = ({ children }) => {
 	return (
 		<ThemeProvider>
-			<UserProvider>{children}</UserProvider>
+			<UserProvider>
+				<BookmarkProvider>
+					<LikedProvider>{children}</LikedProvider>
+				</BookmarkProvider>
+			</UserProvider>
 		</ThemeProvider>
 	);
 };
