@@ -1,9 +1,11 @@
-import { Footer } from './Components';
+import { Footer, Navbar } from './Components';
+import { AppRoutes } from './Components/Router/Router';
 import './index.css';
 function App() {
 	return (
 		<div className='app'>
-			<div className='app-main-content'>HOME-SCREEN</div>
+			<Navbar />
+			<AppRoutes />
 			<Footer />
 		</div>
 	);
