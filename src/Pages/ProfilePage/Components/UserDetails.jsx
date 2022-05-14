@@ -1,13 +1,12 @@
-import { useUser } from '../../../Context';
+import { useAuth } from '../../../Context';
 
 const UserDetails = () => {
-	const { user } = useUser();
-
-	const { bio, displayName, followers, following, photoUrl, totalPost, link } = user;
+	const { authUser } = useAuth();
+	const { bio, displayName, followers, following, photoURL, posts, link } = authUser;
 	return (
 		<div className='user-detail'>
 			<div className='user-img'>
-				<img src={photoUrl} alt={displayName} />
+				<img src={photoURL} alt={displayName} />
 			</div>
 			<div className='user-info'>
 				<div className='user-info-name'>
@@ -18,7 +17,7 @@ const UserDetails = () => {
 				<div className='user-info-followers'>
 					<span>Followers {followers}</span>
 					<span>Following {following}</span>
-					<span>Posts {totalPost}</span>
+					<span>Posts {posts}</span>
 				</div>
 				<div className='user-info-bio'>{bio}</div>
 				<a className='user-info-link' href={link} target='_blank' rel='noreferrer'>

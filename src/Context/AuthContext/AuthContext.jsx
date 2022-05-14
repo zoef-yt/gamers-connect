@@ -1,6 +1,7 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { auth } from '../../Firebase/FirebaseAuth';
+import { getSpecificUser } from '../../Firebase/FirebaseFirestore';
 
 const AuthContext = createContext();
 
@@ -11,10 +12,14 @@ const AuthProvider = ({ children }) => {
 	const [error, setError] = useState({ hasError: false, errorMessage: '' });
 
 	useEffect(() => {
-		onAuthStateChanged(auth, (user) => {
+		onAuthStateChanged(auth, async (user) => {
 			console.log(user);
-			if (user) setAuthUser(user.providerData[0]);
-			else setAuthUser(null);
+			if (user) {
+				const authenticatedUser = await getSpecificUser(user.uid);
+				setAuthUser(authenticatedUser);
+			} else {
+				setAuthUser(null);
+			}
 		});
 	}, []);
 
