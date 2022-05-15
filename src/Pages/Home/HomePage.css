@@ -38,9 +38,16 @@
 	justify-content: space-around;
 	align-items: flex-start;
 	height: 100%;
-	width: 90%;
+	max-width: 90%;
 	padding: 1rem;
 	margin: auto 1rem;
+}
+.user-details p {
+	width: 13ch;
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .user-details .btn {
 	width: 100%;

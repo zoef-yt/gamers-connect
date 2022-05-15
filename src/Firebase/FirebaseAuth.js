@@ -8,7 +8,7 @@ import {
 	signInWithEmailAndPassword,
 	signInWithPopup,
 } from 'firebase/auth';
-import { addUserToTheDB } from './FirebaseFirestore';
+import { addUserToTheDB, getSpecificUser } from './FirebaseFirestore';
 const auth = getAuth(app);
 const defaultImage =
 	'https://firebasestorage.googleapis.com/v0/b/react-testing-firebase-39d5e.appspot.com/o/defaultImages%2Fdefault.jpg?alt=media&token=1f3c0b1d-9d99-406b-b524-f6e278f7c5c7';
@@ -27,7 +27,7 @@ const getNewUserObject = (currentUser) => {
 		backgroundImageUrl: '',
 	};
 };
-const emailSignUpHandler = async (errorHandler, setIsLoading, setTextFields, textFields) => {
+const emailSignUpHandler = async (errorHandler, setIsLoading, setTextFields, textFields, setAuthUser) => {
 	const { email, password, confirmPassword, name } = textFields;
 	if (name.length < 2) {
 		setTextFields({ ...textFields, nameError: true });
@@ -80,6 +80,8 @@ const emailSignUpHandler = async (errorHandler, setIsLoading, setTextFields, tex
 		});
 		const currentUser = auth.currentUser;
 		await addUserToTheDB(auth.currentUser.uid, getNewUserObject(currentUser));
+		const authenticatedUser = await getSpecificUser(auth.currentUser.uid);
+		setAuthUser(authenticatedUser);
 		setIsLoading(false);
 	} catch (error) {
 		logOut();

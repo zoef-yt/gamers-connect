@@ -5,7 +5,7 @@ const LikedContext = createContext();
 const LikedProvider = ({ children }) => {
 	const [likes, setLikes] = useState([]);
 	useEffect(() => {
-		//!TODO this is a temp data and will  be removed
+		//! TODO this is a temp data and will  be removed
 
 		setLikes([
 			{

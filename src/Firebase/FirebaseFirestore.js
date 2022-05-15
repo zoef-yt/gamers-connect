@@ -1,4 +1,4 @@
-import { getFirestore, collection, setDoc, doc, getDoc, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, setDoc, doc, getDoc, getDocs, deleteDoc } from 'firebase/firestore';
 import { app } from './FirebaseConfig';
 
 const db = getFirestore(app);
@@ -16,7 +16,41 @@ const addUserToTheDB = async (yourDocumentId, data) => {
 		console.log(error);
 	}
 };
-//!TODO commented for future
+
+const followUser = async (currentUserId, followingUserId) => {
+	const currentUserFollowingCollection = collection(db, `users/${currentUserId}/following`);
+	const followingUserFollowersCollection = collection(db, `users/${followingUserId}/followers`);
+
+	await setDoc(doc(currentUserFollowingCollection, followingUserId), {
+		id: followingUserId,
+	});
+	const follows = await getDocs(currentUserFollowingCollection);
+	await setDoc(doc(userCollection, currentUserId), { following: follows.size }, { merge: true });
+
+	await setDoc(doc(followingUserFollowersCollection, currentUserId), {
+		id: currentUserId,
+	});
+	const followers = await getDocs(followingUserFollowersCollection);
+	await setDoc(doc(userCollection, followingUserId), { followers: followers.size }, { merge: true });
+};
+
+const unfollowUser = async (currentUserId, unfollowingUserId) => {
+	try {
+		const currentUserFollowingCollection = collection(db, `users/${currentUserId}/following`);
+		const followingUserFollowersCollection = collection(db, `users/${unfollowingUserId}/followers`);
+
+		await deleteDoc(doc(currentUserFollowingCollection, unfollowingUserId));
+		const follows = await getDocs(currentUserFollowingCollection);
+		await setDoc(doc(userCollection, currentUserId), { following: follows.size }, { merge: true });
+
+		await deleteDoc(doc(followingUserFollowersCollection, currentUserId));
+		const followers = await getDocs(followingUserFollowersCollection);
+		await setDoc(doc(userCollection, unfollowingUserId), { followers: followers.size }, { merge: true });
+	} catch (error) {
+		console.log('un-follow not done', error);
+	}
+};
+//! TODO commented for future
 // const updateUserDB = async () => {};
 // const createNewPost = () => {};
 // const editPost = () => {};
@@ -43,6 +77,7 @@ const getSpecificUser = async (userId) => {
 		return null;
 	}
 };
+
 const getAllUsers = async () => {
 	try {
 		const docs = await getDocs(collection(db, 'users'));
@@ -57,4 +92,4 @@ const getAllUsers = async () => {
 	}
 };
 
-export { addUserToTheDB, getSpecificUser, getAllUsers };
+export { addUserToTheDB, getSpecificUser, getAllUsers, followUser, unfollowUser };

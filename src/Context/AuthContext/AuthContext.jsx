@@ -13,7 +13,6 @@ const AuthProvider = ({ children }) => {
 
 	useEffect(() => {
 		onAuthStateChanged(auth, async (user) => {
-			console.log(user);
 			if (user) {
 				const authenticatedUser = await getSpecificUser(user.uid);
 				setAuthUser(authenticatedUser);

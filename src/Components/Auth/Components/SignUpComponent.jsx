@@ -4,7 +4,7 @@ import { GoogleAuthBtn } from './GoogleAuthBtn';
 import { InputField } from './InputField';
 
 const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, togglePassword, setTextFields }) => {
-	const { isLoading, switchAuthMode, error, errorHandler, setIsLoading } = useAuth();
+	const { isLoading, switchAuthMode, error, errorHandler, setIsLoading, setAuthUser } = useAuth();
 
 	return (
 		<div className={className} autoComplete='on'>
@@ -49,7 +49,7 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 				/>
 			</div>
 			<button
-				onClick={() => (!isLoading ? emailSignUpHandler(errorHandler, setIsLoading, setTextFields, textFields) : null)}
+				onClick={() => (!isLoading ? emailSignUpHandler(errorHandler, setIsLoading, setTextFields, textFields, setAuthUser) : null)}
 				className={`btn modal-button ${isLoading ? 'btn-disabled' : 'btn-primary'}`}
 			>
 				{isLoading ? 'Loading...' : 'SignUp'}
