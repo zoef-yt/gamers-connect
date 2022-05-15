@@ -1,10 +1,16 @@
-import { useAuth } from '../../../Context';
 import { emailLoginHandler } from '../../../Firebase/FirebaseAuth';
 import { GoogleAuthBtn } from './GoogleAuthBtn';
 import { InputField } from './InputField';
-const LoginComponent = ({ className, setUserDetails, textFields, showPassword, togglePassword, setTextFields, testUser }) => {
-	const { isLoading, switchAuthMode, error, errorHandler, setIsLoading } = useAuth();
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsLoginForm, setIsLoading, setError } from '../../../store/Auth/AuthSlice';
 
+const LoginComponent = ({ className, setUserDetails, textFields, showPassword, togglePassword, setTextFields, testUser }) => {
+	const dispatch = useDispatch();
+	const { isLoading, error } = useSelector((store) => store.auth);
+
+	const errorHandler = (hasError, message) => {
+		dispatch(setError({ hasError: hasError, errorMessage: message }));
+	};
 	return (
 		<div className={className} autoComplete='on'>
 			<h1>Log in</h1>
@@ -45,13 +51,18 @@ const LoginComponent = ({ className, setUserDetails, textFields, showPassword, t
 			</p>
 
 			<button
-				onClick={() => (!isLoading ? emailLoginHandler(errorHandler, setIsLoading, setTextFields, textFields) : null)}
+				onClick={() => (!isLoading ? emailLoginHandler(errorHandler, setIsLoading, dispatch, setTextFields, textFields) : null)}
 				className={`btn modal-button ${isLoading ? 'btn-disabled' : 'btn-primary'}`}
 			>
 				{isLoading ? 'Loading...' : 'Login'}
 			</button>
 			{error.hasError && <p className='error-text'> *{error.errorMessage} </p>}
-			<button onClick={switchAuthMode} className='btn-link btn'>
+			<button
+				onClick={() => {
+					dispatch(setIsLoginForm());
+				}}
+				className='btn-link btn'
+			>
 				Don't have account? Sign up!
 			</button>
 

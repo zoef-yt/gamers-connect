@@ -1,13 +1,15 @@
-//@ts-check
 import { useState } from 'react';
-import { useAuth } from '../../Context';
 import './Auth.css';
 import { LoginComponent } from './Components/LoginComponent';
 import { SignUpComponent } from './Components/SignUpComponent';
-const Auth = () => {
-	const { isLoginForm, errorHandler } = useAuth();
-	const [showPassword, setShowPassword] = useState({ password: false, confirmPassword: false });
+import { useSelector, useDispatch } from 'react-redux';
+import { setError } from '../../store/Auth/AuthSlice';
 
+const Auth = () => {
+	const dispatch = useDispatch();
+
+	const [showPassword, setShowPassword] = useState({ password: false, confirmPassword: false });
+	const { isLoginForm } = useSelector((store) => store.auth);
 	const defaultText = {
 		name: '',
 		email: '',
@@ -26,6 +28,9 @@ const Auth = () => {
 
 	const [textFields, setTextFields] = useState(defaultText);
 
+	const errorHandler = (hasError, message) => {
+		dispatch(setError({ hasError: hasError, errorMessage: message }));
+	};
 	const setUserDetails = (e) => {
 		errorHandler(false, '');
 		setTextFields({
@@ -44,7 +49,7 @@ const Auth = () => {
 	return (
 		<div className='app-content '>
 			<SignUpComponent
-				className={` form ${isLoginForm ? 'form-out' : 'form-active'}`}
+				className={`form ${isLoginForm ? 'form-out' : 'form-active'}`}
 				setUserDetails={setUserDetails}
 				textFields={textFields}
 				showPassword={showPassword}

@@ -1,11 +1,18 @@
-import { useAuth } from '../../../Context';
 import { emailSignUpHandler } from '../../../Firebase/FirebaseAuth';
 import { GoogleAuthBtn } from './GoogleAuthBtn';
 import { InputField } from './InputField';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsLoginForm, setIsLoading, setError, setAuthUser } from '../../../store/Auth/AuthSlice';
 const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, togglePassword, setTextFields }) => {
-	const { isLoading, switchAuthMode, error, errorHandler, setIsLoading, setAuthUser } = useAuth();
+	const dispatch = useDispatch();
+	const { isLoading, error } = useSelector((store) => store.auth);
 
+	const errorHandler = (hasError, message) => {
+		dispatch(setError({ hasError: hasError, errorMessage: message }));
+	};
+	const setUserHandler = (user) => {
+		dispatch(setAuthUser(user));
+	};
 	return (
 		<div className={className} autoComplete='on'>
 			<h1>Sign Up</h1>
@@ -19,6 +26,7 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 					value={textFields.name}
 					hasError={textFields.nameError}
 				/>
+
 				<InputField
 					labelText='Email Address'
 					type='email'
@@ -27,6 +35,7 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 					hasError={textFields.emailError}
 					value={textFields.email}
 				/>
+
 				<InputField
 					labelText='Password'
 					type={!showPassword.password ? 'password' : 'text'}
@@ -37,6 +46,7 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 					passwordType={'password'}
 					onClick={togglePassword}
 				/>
+
 				<InputField
 					labelText='Confirm password'
 					type={!showPassword.confirmPassword ? 'password' : 'text'}
@@ -48,16 +58,27 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 					passwordType={'confirmPassword'}
 				/>
 			</div>
+
 			<button
-				onClick={() => (!isLoading ? emailSignUpHandler(errorHandler, setIsLoading, setTextFields, textFields, setAuthUser) : null)}
+				onClick={() =>
+					!isLoading ? emailSignUpHandler(errorHandler, setIsLoading, dispatch, setTextFields, textFields, setUserHandler) : null
+				}
 				className={`btn modal-button ${isLoading ? 'btn-disabled' : 'btn-primary'}`}
 			>
 				{isLoading ? 'Loading...' : 'SignUp'}
 			</button>
+
 			{error.hasError && <p className='error-text'> *{error.errorMessage} </p>}
-			<button onClick={switchAuthMode} className=' btn-link btn'>
+
+			<button
+				onClick={() => {
+					dispatch(setIsLoginForm());
+				}}
+				className=' btn-link btn'
+			>
 				Already have account? Log In!
 			</button>
+
 			<GoogleAuthBtn />
 		</div>
 	);

@@ -1,7 +1,8 @@
-import { useAuth } from '../../../Context';
+import { useSelector } from 'react-redux';
 
 const UserDetails = () => {
-	const { authUser } = useAuth();
+	const { authUser } = useSelector((store) => store.auth);
+
 	const { bio, displayName, followers, following, photoURL, posts, link } = authUser;
 	return (
 		<div className='user-detail'>

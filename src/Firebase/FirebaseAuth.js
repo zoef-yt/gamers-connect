@@ -27,7 +27,7 @@ const getNewUserObject = (currentUser) => {
 		backgroundImageUrl: '',
 	};
 };
-const emailSignUpHandler = async (errorHandler, setIsLoading, setTextFields, textFields, setAuthUser) => {
+const emailSignUpHandler = async (errorHandler, setIsLoading, dispatch, setTextFields, textFields, setAuthUser) => {
 	const { email, password, confirmPassword, name } = textFields;
 	if (name.length < 2) {
 		setTextFields({ ...textFields, nameError: true });
@@ -72,7 +72,7 @@ const emailSignUpHandler = async (errorHandler, setIsLoading, setTextFields, tex
 
 	//
 	try {
-		setIsLoading(true);
+		dispatch(setIsLoading(true));
 		await createUserWithEmailAndPassword(auth, email, password);
 		await updateProfile(auth.currentUser, {
 			displayName: name,
@@ -82,15 +82,15 @@ const emailSignUpHandler = async (errorHandler, setIsLoading, setTextFields, tex
 		await addUserToTheDB(auth.currentUser.uid, getNewUserObject(currentUser));
 		const authenticatedUser = await getSpecificUser(auth.currentUser.uid);
 		setAuthUser(authenticatedUser);
-		setIsLoading(false);
+		dispatch(setIsLoading(false));
 	} catch (error) {
 		logOut();
 		errorHandler(true, error.message);
-		setIsLoading(false);
+		dispatch(setIsLoading(false));
 	}
 };
 
-const emailLoginHandler = async (errorHandler, setIsLoading, setTextFields, textFields) => {
+const emailLoginHandler = async (errorHandler, setIsLoading, dispatch, setTextFields, textFields) => {
 	const { email, password } = textFields;
 
 	if (email.length < 0) {
@@ -117,29 +117,30 @@ const emailLoginHandler = async (errorHandler, setIsLoading, setTextFields, text
 	}
 	errorHandler(false, '');
 	try {
-		setIsLoading(true);
+		dispatch(setIsLoading(true));
 		await signInWithEmailAndPassword(auth, email, password);
-		setIsLoading(false);
+		dispatch(setIsLoading(false));
 	} catch (error) {
 		console.log(error.message);
 		errorHandler(true, error.message);
-		setIsLoading(false);
+		dispatch(setIsLoading(false));
 	}
 };
 
 const provider = new GoogleAuthProvider();
-const googleAuthHandler = async (setIsLoading, errorHandler) => {
+const googleAuthHandler = async (errorHandler, setIsLoading, dispatch) => {
 	errorHandler(false, '');
 
 	try {
-		setIsLoading(true);
+		dispatch(setIsLoading(true));
 		await signInWithPopup(auth, provider);
 		const currentUser = auth.currentUser;
-		await addUserToTheDB(auth.currentUser.uid, getNewUserObject(currentUser));
-		setIsLoading(false);
+		const isUserInDb = await getSpecificUser(auth.currentUser.uid);
+		!isUserInDb && (await addUserToTheDB(auth.currentUser.uid, getNewUserObject(currentUser)));
+		dispatch(setIsLoading(false));
 	} catch (error) {
 		errorHandler(true, error.message);
-		setIsLoading(false);
+		dispatch(setIsLoading(false));
 	}
 };
 
