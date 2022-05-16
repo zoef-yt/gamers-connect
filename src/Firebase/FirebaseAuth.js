@@ -27,7 +27,8 @@ const getNewUserObject = (currentUser) => {
 		backgroundImageUrl: '',
 	};
 };
-const emailSignUpHandler = async (errorHandler, setIsLoading, dispatch, setTextFields, textFields, setAuthUser) => {
+
+const emailSignUpHandler = async (errorHandler, setIsLoading, dispatch, setTextFields, textFields, setUserHandler) => {
 	const { email, password, confirmPassword, name } = textFields;
 	if (name.length < 2) {
 		setTextFields({ ...textFields, nameError: true });
@@ -80,12 +81,10 @@ const emailSignUpHandler = async (errorHandler, setIsLoading, dispatch, setTextF
 		});
 		const currentUser = auth.currentUser;
 		await addUserToTheDB(auth.currentUser.uid, getNewUserObject(currentUser));
-		const authenticatedUser = await getSpecificUser(auth.currentUser.uid);
-		setAuthUser(authenticatedUser);
-		dispatch(setIsLoading(false));
 	} catch (error) {
 		logOut();
 		errorHandler(true, error.message);
+	} finally {
 		dispatch(setIsLoading(false));
 	}
 };
@@ -152,4 +151,4 @@ const logOut = () => {
 	}
 };
 
-export { logOut, googleAuthHandler, auth, provider, emailSignUpHandler, emailLoginHandler };
+export { auth, provider, logOut, googleAuthHandler, emailSignUpHandler, emailLoginHandler };

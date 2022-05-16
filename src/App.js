@@ -6,11 +6,13 @@ import { auth } from './Firebase/FirebaseAuth';
 import { getSpecificUser } from './Firebase/FirebaseFirestore';
 import './index.css';
 import { useDispatch } from 'react-redux';
+import { setTheme } from './store/Theme/ThemeSlice.jsx';
 import { setAuthUser } from './store/Auth/AuthSlice';
 function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		dispatch(setTheme());
 		onAuthStateChanged(auth, async (user) => {
 			if (user) {
 				const authenticatedUser = await getSpecificUser(user.uid);
