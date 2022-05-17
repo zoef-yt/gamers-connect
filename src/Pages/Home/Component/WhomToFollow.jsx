@@ -1,20 +1,23 @@
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../../Context';
-import { followUser, unfollowUser } from '../../../Firebase/FirebaseFirestore';
+import { followUser, getAllUsers, unfollowUser } from '../../../Firebase/FirebaseFirestore';
 import { useDispatch, useSelector } from 'react-redux';
+import { setAllUser } from '../../../store/AllUser/AllUserSlice';
 
 export const WhomToFollow = (props) => {
 	const { photoURL, followers, uid, displayName } = props.user;
-	const { setTriggerUseEffect } = useUser();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { authUser, following: followingList } = useSelector((store) => store.auth);
 	const isFollowing = followingList.findIndex((follower) => follower.id === uid) === -1 ? false : true;
 
+	const getAllUserHandler = async () => {
+		const users = await getAllUsers();
+		dispatch(setAllUser(users));
+	};
 	const followHandler = async (currentUserId, toFollowId) => {
 		if (authUser) {
 			await followUser(currentUserId, toFollowId, dispatch);
-			setTriggerUseEffect((prev) => !prev);
+			getAllUserHandler();
 		} else {
 			navigate('/auth');
 		}
@@ -23,7 +26,7 @@ export const WhomToFollow = (props) => {
 	const unfollowingHandler = async (currentUserId, toUnfollowId) => {
 		if (authUser) {
 			await unfollowUser(currentUserId, toUnfollowId, dispatch);
-			setTriggerUseEffect((prev) => !prev);
+			getAllUserHandler();
 		} else {
 			navigate('/auth');
 		}

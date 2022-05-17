@@ -1,9 +1,11 @@
 import { getFirestore, collection, setDoc, doc, getDoc, getDocs, deleteDoc } from 'firebase/firestore';
 import { app } from './FirebaseConfig';
 import { setFollowing } from '../store/Auth/AuthSlice';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const db = getFirestore(app);
 
+const storage = getStorage();
 const userCollection = collection(db, 'users');
 // const postCollection = collection(db, 'posts');
 
@@ -16,6 +18,10 @@ const addUserToTheDB = async (yourDocumentId, data) => {
 	} catch (error) {
 		console.log(error);
 	}
+};
+
+const getSpecificCollection = (collectionLocation) => {
+	return collection(db, collectionLocation);
 };
 
 const followUser = async (currentUserId, followingUserId, dispatch) => {
@@ -69,7 +75,39 @@ const unfollowUser = async (currentUserId, unfollowingUserId, dispatch) => {
 	}
 };
 //! TODO commented for future
-// const updateUserDB = async () => {};
+const updateUserDB = async (updatedData) => {
+	console.log(updatedData);
+	try {
+		await setDoc(
+			doc(userCollection, updatedData.uid),
+			{
+				displayName: updatedData.displayName || 'User',
+				bio: updatedData.bio ?? '',
+				url: updatedData.url ?? '',
+			},
+			{ merge: true },
+		);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const editUserProfileImage = async (userId, imageFile) => {
+	if (imageFile) {
+		try {
+			const storageRef = ref(storage, `users/${userId}`);
+			await uploadBytes(storageRef, imageFile);
+			const url = await getDownloadURL(storageRef);
+			console.log(url);
+			await setDoc(doc(userCollection, userId), { photoURL: url }, { merge: true });
+			return url;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	}
+	return;
+};
 // const createNewPost = () => {};
 // const editPost = () => {};
 // const addCommentsToPost = () => {};
@@ -78,10 +116,6 @@ const unfollowUser = async (currentUserId, unfollowingUserId, dispatch) => {
 // const getSpecificDocument = () => {};
 // const getAllDocuments = () => {};
 // const getAllCollections = () => {};
-
-const getSpecificCollection = (collectionLocation) => {
-	return collection(db, collectionLocation);
-};
 
 const getSpecificUser = async (userId) => {
 	try {
@@ -113,4 +147,4 @@ const getAllUsers = async () => {
 	}
 };
 
-export { addUserToTheDB, getSpecificUser, getAllUsers, followUser, unfollowUser };
+export { addUserToTheDB, getSpecificUser, getAllUsers, followUser, unfollowUser, updateUserDB, editUserProfileImage };
