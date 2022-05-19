@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { BookmarkPage, Home, LikedPostPage, PageNotFound, ProfilePage } from '../../Pages';
 import { Auth } from '../Auth/Auth';
 import { PrivateRoute } from '../Auth/PrivateRoute';
-import { RestrictedRoute } from '../Auth/RestrictedRoute';
+import { UnAuthenticatedRoute } from '../Auth/UnAuthenticatedRoute';
 
 const AppRoutes = () => {
 	return (
@@ -13,11 +13,12 @@ const AppRoutes = () => {
 				<Route path='/likes' element={<LikedPostPage />} />
 			</Route>
 
-			<Route element={<RestrictedRoute />}>
+			<Route element={<UnAuthenticatedRoute />}>
 				<Route path='/auth' element={<Auth />} />
 			</Route>
-			<Route path='/' element={<Home />} />
 
+			<Route path='/' element={<Home />} />
+			<Route path='/profile/:id' element={<ProfilePage />} />
 			<Route path='*' element={<PageNotFound />} />
 		</Routes>
 	);

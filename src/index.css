@@ -12,6 +12,7 @@
 	--colour-secondary-second: #698dc7;
 	--box-shadow-level-1: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
 	--box-shadow-level-2: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+	--box-shadow-level-3: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 [data-theme='dark'] {

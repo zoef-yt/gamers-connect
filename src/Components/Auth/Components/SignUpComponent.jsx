@@ -1,62 +1,17 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useAuth } from '../../../Context';
-import { auth } from '../../../Firebase/FirebaseAuth';
+import { emailSignUpHandler } from '../../../Firebase/FirebaseAuth';
 import { GoogleAuthBtn } from './GoogleAuthBtn';
 import { InputField } from './InputField';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsLoginForm, setIsLoading, setError, setAuthUser } from '../../../store/Auth/AuthSlice';
 const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, togglePassword, setTextFields }) => {
-	const { isLoading, switchAuthMode, error, errorHandler, setIsLoading } = useAuth();
-	const signUpHandler = async () => {
-		const { email, password, confirmPassword, name } = textFields;
-		if (name.length < 2) {
-			setTextFields({ ...textFields, nameError: true });
-			errorHandler(true, 'Name must be atleast 2 characters long');
-			return;
-		}
-		if (email.length === 0) {
-			setTextFields({ ...textFields, emailError: true });
-			errorHandler(true, 'Email is required');
-			return;
-		}
-		if (
-			!email
-				.toLowerCase()
-				.match(
-					/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-				)
-		) {
-			errorHandler(true, 'Email is invalid');
-			setTextFields({ ...textFields, emailError: true });
-			return;
-		}
-		if (password.length < 6) {
-			errorHandler(true, 'Password cannot be shorter than 6 characters');
-			setTextFields({ ...textFields, passWordError: true });
-			return;
-		}
-		if (confirmPassword.length < 6) {
-			setTextFields({ ...textFields, confirmPasswordError: true });
-			errorHandler(true, 'Confirm Password cannot be shorter than 6 characters');
-			return;
-		}
-		if (password !== confirmPassword) {
-			setTextFields({
-				...textFields,
-				confirmPasswordError: true,
-				passWordError: true,
-			});
-			errorHandler(true, 'Password and Confirm Password must be same');
-			return;
-		}
+	const dispatch = useDispatch();
+	const { isLoading, error } = useSelector((store) => store.auth);
 
-		try {
-			setIsLoading(true);
-			await createUserWithEmailAndPassword(auth, email, password);
-			setIsLoading(false);
-		} catch (error) {
-			errorHandler(true, error.message);
-			setIsLoading(false);
-		}
+	const errorHandler = (hasError, message) => {
+		dispatch(setError({ hasError: hasError, errorMessage: message }));
+	};
+	const setUserHandler = (user) => {
+		dispatch(setAuthUser(user));
 	};
 	return (
 		<div className={className} autoComplete='on'>
@@ -71,6 +26,7 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 					value={textFields.name}
 					hasError={textFields.nameError}
 				/>
+
 				<InputField
 					labelText='Email Address'
 					type='email'
@@ -79,6 +35,7 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 					hasError={textFields.emailError}
 					value={textFields.email}
 				/>
+
 				<InputField
 					labelText='Password'
 					type={!showPassword.password ? 'password' : 'text'}
@@ -89,6 +46,7 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 					passwordType={'password'}
 					onClick={togglePassword}
 				/>
+
 				<InputField
 					labelText='Confirm password'
 					type={!showPassword.confirmPassword ? 'password' : 'text'}
@@ -100,16 +58,27 @@ const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, 
 					passwordType={'confirmPassword'}
 				/>
 			</div>
+
 			<button
-				onClick={() => (!isLoading ? signUpHandler() : null)}
+				onClick={() =>
+					!isLoading ? emailSignUpHandler(errorHandler, setIsLoading, dispatch, setTextFields, textFields, setUserHandler) : null
+				}
 				className={`btn modal-button ${isLoading ? 'btn-disabled' : 'btn-primary'}`}
 			>
 				{isLoading ? 'Loading...' : 'SignUp'}
 			</button>
+
 			{error.hasError && <p className='error-text'> *{error.errorMessage} </p>}
-			<button onClick={switchAuthMode} className=' btn-link btn'>
+
+			<button
+				onClick={() => {
+					dispatch(setIsLoginForm());
+				}}
+				className=' btn-link btn'
+			>
 				Already have account? Log In!
 			</button>
+
 			<GoogleAuthBtn />
 		</div>
 	);

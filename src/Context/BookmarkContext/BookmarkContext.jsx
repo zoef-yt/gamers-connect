@@ -5,7 +5,7 @@ const BookmarkContext = createContext();
 const BookmarkProvider = ({ children }) => {
 	const [bookmarks, setBookmarks] = useState([]);
 	useEffect(() => {
-		//!TODO this is a temp data and will  be removed
+		//! TODO this is a temp data and will  be removed
 		setBookmarks([
 			{
 				from: {

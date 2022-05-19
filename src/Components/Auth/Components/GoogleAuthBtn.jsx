@@ -1,28 +1,21 @@
-import { signInWithPopup } from 'firebase/auth';
 import { GoogleLogoIcon } from '../../../Assets/AllSVG';
-import { useAuth } from '../../../Context';
-import { auth, provider } from '../../../Firebase/FirebaseAuth';
-
+import { googleAuthHandler } from '../../../Firebase/FirebaseAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsLoading, setError } from '../../../store/Auth/AuthSlice';
 const GoogleAuthBtn = () => {
-	const { setAuthUser, isLoading, setIsLoading, errorHandler } = useAuth();
-	const googleAuthHandler = async () => {
-		errorHandler(false, '');
+	const dispatch = useDispatch();
+	const { isLoading } = useSelector((store) => store.auth);
 
-		try {
-			setIsLoading(true);
-			const result = await signInWithPopup(auth, provider);
-			setAuthUser(result.user.providerData[0]);
-			setIsLoading(false);
-		} catch (error) {
-			errorHandler(true, error.message);
-			setIsLoading(false);
-		}
+	const errorHandler = (hasError, message) => {
+		dispatch(setError({ hasError: hasError, errorMessage: message }));
 	};
-
 	return (
 		<div>
 			<h5 className='text-align-center'>or</h5>
-			<button onClick={() => (!isLoading ? googleAuthHandler() : null)} className={`btn google-btn ${isLoading && 'btn-disabled'}`}>
+			<button
+				onClick={() => (!isLoading ? googleAuthHandler(errorHandler, setIsLoading, dispatch) : null)}
+				className={`btn google-btn ${isLoading && 'btn-disabled'}`}
+			>
 				<GoogleLogoIcon /> {isLoading ? 'Loading.....' : 'Continue with Google'}
 			</button>
 		</div>
