@@ -3,6 +3,7 @@ import { GoogleAuthBtn } from './GoogleAuthBtn';
 import { InputField } from './InputField';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsLoginForm, setIsLoading, setError, setAuthUser } from '../../../store/Auth/AuthSlice';
+
 const SignUpComponent = ({ className, setUserDetails, textFields, showPassword, togglePassword, setTextFields }) => {
 	const dispatch = useDispatch();
 	const { isLoading, error } = useSelector((store) => store.auth);

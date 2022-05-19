@@ -1,9 +1,8 @@
 import { useSelector } from 'react-redux';
 
 const UserDetails = () => {
-	const { authUser } = useSelector((store) => store.auth);
-
-	const { bio, displayName, followers, following, photoURL, posts, link } = authUser;
+	const { authUser, followers, following, posts } = useSelector((store) => store.auth);
+	const { bio, displayName, photoURL, link } = authUser;
 	return (
 		<div className='user-detail'>
 			<div className='user-img'>
@@ -16,9 +15,9 @@ const UserDetails = () => {
 					</p>
 				</div>
 				<div className='user-info-followers'>
-					<span>Followers {followers}</span>
-					<span>Following {following}</span>
-					<span>Posts {posts}</span>
+					<span>Followers {followers.length}</span>
+					<span>Following {following.length}</span>
+					<span>Posts {posts.length}</span>
 				</div>
 				<div className='user-info-bio'>{bio}</div>
 				<a className='user-info-link' href={link} target='_blank' rel='noreferrer'>

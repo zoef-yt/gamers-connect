@@ -1,14 +1,16 @@
 import { BookmarksIcon, ExploreIcon, HalfMoonIcon, HomeIcon, LogoutIcon, MultipleHeartIcon, ProfileIcon, SunIcon } from '../../Assets/AllSVG.jsx';
-import { useTheme } from '../../Context/index.js';
 import { logOut } from '../../Firebase/FirebaseAuth.js';
 import { SideBarItem } from './SidebarItem.jsx';
-
+import { setTheme } from '../../store/Theme/ThemeSlice.jsx';
+import { useDispatch, useSelector } from 'react-redux';
 const Sidebar = ({ isSideBarOpen, closeSideBar }) => {
-	const { theme, toggleTheme } = useTheme();
+	const { theme } = useSelector((store) => store.theme);
+	const dispatch = useDispatch();
 	const loutOutHandler = () => {
 		closeSideBar();
 		logOut();
 	};
+
 	return (
 		<aside className={`sidebar ${isSideBarOpen && 'sidebar-opened'}`}>
 			<SideBarItem close={closeSideBar} icon={<HomeIcon />} text='Home' navigateTo='/' />
@@ -17,7 +19,7 @@ const Sidebar = ({ isSideBarOpen, closeSideBar }) => {
 			<SideBarItem close={closeSideBar} icon={<MultipleHeartIcon />} text='Liked' navigateTo='/likes' />
 			<SideBarItem close={closeSideBar} icon={<ProfileIcon />} text='Profile' navigateTo='/my-profile' />
 
-			<div onClick={toggleTheme} className='sidebar-item'>
+			<div onClick={() => dispatch(setTheme())} className='sidebar-item'>
 				{theme === 'dark' ? <SunIcon /> : <HalfMoonIcon />}
 				<p>Theme</p>
 			</div>

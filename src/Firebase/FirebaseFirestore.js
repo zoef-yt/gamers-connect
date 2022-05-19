@@ -1,5 +1,6 @@
 import { getFirestore, collection, setDoc, doc, getDoc, getDocs, deleteDoc } from 'firebase/firestore';
 import { app } from './FirebaseConfig';
+import { setFollowing } from '../store/Auth/AuthSlice';
 
 const db = getFirestore(app);
 
@@ -17,24 +18,34 @@ const addUserToTheDB = async (yourDocumentId, data) => {
 	}
 };
 
-const followUser = async (currentUserId, followingUserId) => {
-	const currentUserFollowingCollection = collection(db, `users/${currentUserId}/following`);
-	const followingUserFollowersCollection = collection(db, `users/${followingUserId}/followers`);
+const followUser = async (currentUserId, followingUserId, dispatch) => {
+	try {
+		const currentUserFollowingCollection = getSpecificCollection(`users/${currentUserId}/following`);
+		await setDoc(doc(currentUserFollowingCollection, followingUserId), {
+			id: followingUserId,
+		});
+		const follows = await getDocs(currentUserFollowingCollection);
+		await setDoc(doc(userCollection, currentUserId), { following: follows.size }, { merge: true });
 
-	await setDoc(doc(currentUserFollowingCollection, followingUserId), {
-		id: followingUserId,
-	});
-	const follows = await getDocs(currentUserFollowingCollection);
-	await setDoc(doc(userCollection, currentUserId), { following: follows.size }, { merge: true });
+		const followingUserFollowersCollection = getSpecificCollection(`users/${followingUserId}/followers`);
+		await setDoc(doc(followingUserFollowersCollection, currentUserId), {
+			id: currentUserId,
+		});
+		const followers = await getDocs(followingUserFollowersCollection);
+		await setDoc(doc(userCollection, followingUserId), { followers: followers.size }, { merge: true });
+		const currentUserFollowers = await getDocs(currentUserFollowingCollection);
 
-	await setDoc(doc(followingUserFollowersCollection, currentUserId), {
-		id: currentUserId,
-	});
-	const followers = await getDocs(followingUserFollowersCollection);
-	await setDoc(doc(userCollection, followingUserId), { followers: followers.size }, { merge: true });
+		const allFollowers = [];
+		currentUserFollowers.forEach((doc) => {
+			allFollowers.push(doc.data());
+		});
+		dispatch(setFollowing(allFollowers));
+	} catch (error) {
+		console.log(error);
+	}
 };
 
-const unfollowUser = async (currentUserId, unfollowingUserId) => {
+const unfollowUser = async (currentUserId, unfollowingUserId, dispatch) => {
 	try {
 		const currentUserFollowingCollection = collection(db, `users/${currentUserId}/following`);
 		const followingUserFollowersCollection = collection(db, `users/${unfollowingUserId}/followers`);
@@ -46,6 +57,13 @@ const unfollowUser = async (currentUserId, unfollowingUserId) => {
 		await deleteDoc(doc(followingUserFollowersCollection, currentUserId));
 		const followers = await getDocs(followingUserFollowersCollection);
 		await setDoc(doc(userCollection, unfollowingUserId), { followers: followers.size }, { merge: true });
+
+		const currentUserFollowers = await getDocs(currentUserFollowingCollection);
+		const allFollowers = [];
+		currentUserFollowers.forEach((doc) => {
+			allFollowers.push(doc.data());
+		});
+		dispatch(setFollowing(allFollowers));
 	} catch (error) {
 		console.log('un-follow not done', error);
 	}
@@ -57,10 +75,13 @@ const unfollowUser = async (currentUserId, unfollowingUserId) => {
 // const addCommentsToPost = () => {};
 // const addThisPostLike = () => {};
 // Getting data from firestore
-// const getSpecificCollection = () => {};
 // const getSpecificDocument = () => {};
 // const getAllDocuments = () => {};
 // const getAllCollections = () => {};
+
+const getSpecificCollection = (collectionLocation) => {
+	return collection(db, collectionLocation);
+};
 
 const getSpecificUser = async (userId) => {
 	try {
