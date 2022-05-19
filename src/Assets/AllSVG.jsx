@@ -227,6 +227,47 @@ function EditIcon(props) {
 		</svg>
 	);
 }
+
+function AddImageIcon(props) {
+	return (
+		<svg width='40' height='40' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9.09c-.06-.33-.09-.66-.09-1c0-.68.12-1.36.35-2H5l3.5-4.5l2.5 3l3.5-4.5l2.23 2.97c.97-.63 2.11-.97 3.27-.97c.34 0 .67.03 1 .09V5a2 2 0 0 0-2-2H5m14 13v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2Z'
+			></path>
+		</svg>
+	);
+}
+
+function CreatePostIcon(props) {
+	return (
+		<svg width='25' height='25' viewBox='0 0 26 26' {...props}>
+			<path
+				fill='currentColor'
+				d='M22.438-.063c-.375 0-.732.17-1.032.47l-.718.687l4.218 4.218l.688-.718c.6-.6.6-1.494 0-2.094L23.5.406c-.3-.3-.688-.469-1.063-.469zM20 1.688l-1.094.907l4.5 4.5l1-1L20 1.687zm-1.688 1.625l-9.03 8.938a.975.975 0 0 0-.126.125l-.062.031a.975.975 0 0 0-.219.438l-1.219 4.281a.975.975 0 0 0 1.219 1.219l4.281-1.219a.975.975 0 0 0 .656-.531l8.876-8.782L21 6v.094l-1.188-1.188h.094l-1.593-1.593zM.813 4A1 1 0 0 0 0 5v20a1 1 0 0 0 1 1h20a1 1 0 0 0 1-1V14a1 1 0 1 0-2 0v10H2V6h10a1 1 0 1 0 0-2H1a1 1 0 0 0-.094 0a1 1 0 0 0-.094 0zm9.813 9.813l1.375.093l.094 1.5l-1.375.406l-.531-.53l.437-1.47z'
+			></path>
+		</svg>
+	);
+}
+
+function DeleteIcon(props) {
+	return (
+		<svg width='25' height='25' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z'
+			></path>
+		</svg>
+	);
+}
+
+function DoneIcon(props) {
+	return (
+		<svg width='25' height='25' viewBox='0 0 24 24' {...props}>
+			<path fill='currentColor' d='M9 16.2L4.8 12l-1.4 1.4L9 19L21 7l-1.4-1.4L9 16.2z'></path>
+		</svg>
+	);
+}
 export {
 	SunIcon,
 	HalfMoonIcon,
@@ -246,4 +287,8 @@ export {
 	HidePasswordEyeIcon,
 	GoogleLogoIcon,
 	EditIcon,
+	AddImageIcon,
+	CreatePostIcon,
+	DeleteIcon,
+	DoneIcon,
 };

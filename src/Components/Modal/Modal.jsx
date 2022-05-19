@@ -3,14 +3,17 @@ import './Modal.css';
 import { closeModal } from '../../store/Modal/ModalSlice';
 import { useState } from 'react';
 import { updateUserDetails } from '../../store/Auth/AuthSlice';
+import { CreatePostsCard } from './ModalComponent/CreatePostsCard';
 function ModalComponent() {
 	const { isModalOpened, modalType } = useSelector((state) => state.modal);
 	const dispatch = useDispatch();
 	const setModalData = (modalType) => {
-		console.log(modalType);
 		switch (modalType) {
 			case 'FirstComponent':
-				return <EditComponent closeModal={closeModal} />;
+				return <EditComponent />;
+
+			case 'CreatePostsCard':
+				return <CreatePostsCard />;
 			default:
 				dispatch(closeModal());
 				return null;
@@ -55,6 +58,7 @@ const EditComponent = () => {
 					Name:
 					<input name='name' value={userDetails.name} onChange={onChangeHandler} type='text' className='text-field' placeholder='Name' />
 				</label>
+
 				<label>
 					Bio:
 					<textarea
@@ -68,6 +72,7 @@ const EditComponent = () => {
 						maxLength='250'
 					/>
 				</label>
+
 				<label>
 					Link:
 					<input
@@ -80,6 +85,7 @@ const EditComponent = () => {
 					/>
 				</label>
 			</div>
+
 			<div className='modal-card-footer'>
 				<button
 					className='btn btn-secondary '

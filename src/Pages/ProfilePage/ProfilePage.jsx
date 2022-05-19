@@ -1,12 +1,21 @@
 import { UserDetails } from './Components/UserDetails';
-import { UserPost } from './Components/UserPost';
+import { UserPostHolder } from './Components/UserPost';
+import { CreateNewPostBtn } from '../../Components/CreateNewPostBtn';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const ProfilePage = () => {
+	const { uid } = useParams();
+	const [userId, setUserId] = useState(null);
+	useEffect(() => {
+		setUserId(uid);
+	}, [uid]);
 	return (
 		<div className='app-content'>
-			<UserDetails />
+			<UserDetails uid={userId} />
 			<hr />
-			<UserPost />
+			<UserPostHolder uid={userId} />
+			<CreateNewPostBtn />
 		</div>
 	);
 };

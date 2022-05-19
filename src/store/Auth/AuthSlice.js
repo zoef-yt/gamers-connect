@@ -12,23 +12,18 @@ const initialState = {
 	followers: [],
 	following: [],
 	posts: [],
+	likedList: [],
+	bookmarked: [],
 };
 
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		setUserDataInitially: (state, action) => {
-			state.followers = action.payload.followers;
-			state.following = action.payload.following;
-			state.posts = action.payload.posts;
-		},
-
 		updateUserDetails: (state, action) => {
 			updateUserDB(action.payload);
 			state.authUser = { ...state.authUser, ...action.payload };
 		},
-
 		setAuthUser: (state, action) => {
 			state.authUser = action.payload;
 		},
@@ -50,7 +45,25 @@ const authSlice = createSlice({
 		setPosts: (state, action) => {
 			state.posts = action.payload;
 		},
+		setLikeList: (state, action) => {
+			state.likedList = action.payload;
+		},
+		setBookmarked: (state, action) => {
+			state.bookmarked = action.payload;
+		},
 	},
 });
-export const { setAuthUser, setIsLoginForm, setIsLoading, setError, setFollower, setFollowing, setPosts, updateUserDetails } = authSlice.actions;
+
+export const {
+	setAuthUser,
+	setIsLoginForm,
+	setIsLoading,
+	setError,
+	setFollower,
+	setFollowing,
+	setPosts,
+	updateUserDetails,
+	setLikeList,
+	setBookmarked,
+} = authSlice.actions;
 export default authSlice.reducer;

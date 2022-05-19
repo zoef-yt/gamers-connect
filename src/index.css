@@ -79,6 +79,9 @@
 
 .btn-fab {
 	display: flex;
+	right: 10rem;
+	height: 5rem;
+	width: 5rem;
 	justify-content: center;
 	align-items: center;
 	border-radius: 5rem;
@@ -86,15 +89,36 @@
 	padding: 1rem;
 	cursor: pointer;
 	aspect-ratio: unset;
+	z-index: var(--z-index-card-level-2);
 }
 
+.display-none {
+	display: none;
+}
+.loader-div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: var(--z-index-low-level-2);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 .btn-disabled {
 	cursor: not-allowed;
-	background-color: var(--colour-text-grey);
+	background-color: var(--z-index-modal-level);
 }
 
 @media screen and (max-width: 768px) {
 	.btn-fab > p {
 		display: none;
+	}
+	.btn-fab {
+		right: 2rem;
+		bottom: 3rem;
+		padding: 0.5rem;
 	}
 }

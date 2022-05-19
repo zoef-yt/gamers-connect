@@ -1,21 +1,22 @@
+import { useSelector } from 'react-redux';
 import { SinglePostCard } from '../../Components';
-import { useLikes } from '../../Context';
 
 const LikedPostPage = () => {
-	const { likes } = useLikes();
+	const { likedList } = useSelector((store) => store.auth);
+	const { allPosts } = useSelector((store) => store.allPosts);
+	const likedListPosts = allPosts.filter((post) => likedList.findIndex((likedPost) => likedPost.postId === post.postId) !== -1);
 	return (
 		<div className='app-content'>
 			<h1 className='text-align-center'>All Liked Post</h1>
-			{likes.map((post, index) => {
-				const user = post.from;
+			{likedListPosts.map((post) => {
 				return (
 					<SinglePostCard
-						photoUrl={user.photoURL}
-						displayName={user.displayName}
-						post={post.post}
+						key={post.postId}
+						caption={post.caption}
+						image={post.image}
+						uid={post.uid}
+						postId={post.postId}
 						timestamp={post.timestamp}
-						isLiked={true}
-						index={index}
 					/>
 				);
 			})}

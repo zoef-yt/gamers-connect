@@ -1,13 +1,12 @@
-import { getFirestore, collection, setDoc, doc, getDoc, getDocs, deleteDoc } from 'firebase/firestore';
+import { getFirestore, collection, setDoc, doc, getDoc, getDocs, deleteDoc, addDoc, serverTimestamp, query, orderBy } from 'firebase/firestore';
 import { app } from './FirebaseConfig';
 import { setFollowing } from '../store/Auth/AuthSlice';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { uploadImageGetUrl } from './FirebaseStorage';
 
 const db = getFirestore(app);
 
-const storage = getStorage();
 const userCollection = collection(db, 'users');
-// const postCollection = collection(db, 'posts');
+const postCollection = collection(db, 'posts');
 
 // Adding data to firestore
 const addUserToTheDB = async (yourDocumentId, data) => {
@@ -24,25 +23,21 @@ const getSpecificCollection = (collectionLocation) => {
 	return collection(db, collectionLocation);
 };
 
-const followUser = async (currentUserId, followingUserId, dispatch) => {
+const followUser = async (currentUserId, userToFollowId, dispatch) => {
 	try {
 		const currentUserFollowingCollection = getSpecificCollection(`users/${currentUserId}/following`);
-		await setDoc(doc(currentUserFollowingCollection, followingUserId), {
-			id: followingUserId,
+		await setDoc(doc(currentUserFollowingCollection, userToFollowId), {
+			id: userToFollowId,
 		});
-		const follows = await getDocs(currentUserFollowingCollection);
-		await setDoc(doc(userCollection, currentUserId), { following: follows.size }, { merge: true });
 
-		const followingUserFollowersCollection = getSpecificCollection(`users/${followingUserId}/followers`);
+		const followingUserFollowersCollection = getSpecificCollection(`users/${userToFollowId}/followers`);
 		await setDoc(doc(followingUserFollowersCollection, currentUserId), {
 			id: currentUserId,
 		});
-		const followers = await getDocs(followingUserFollowersCollection);
-		await setDoc(doc(userCollection, followingUserId), { followers: followers.size }, { merge: true });
-		const currentUserFollowers = await getDocs(currentUserFollowingCollection);
+		const currentUserFollowingList = await getDocs(currentUserFollowingCollection);
 
 		const allFollowers = [];
-		currentUserFollowers.forEach((doc) => {
+		currentUserFollowingList.forEach((doc) => {
 			allFollowers.push(doc.data());
 		});
 		dispatch(setFollowing(allFollowers));
@@ -57,13 +52,7 @@ const unfollowUser = async (currentUserId, unfollowingUserId, dispatch) => {
 		const followingUserFollowersCollection = collection(db, `users/${unfollowingUserId}/followers`);
 
 		await deleteDoc(doc(currentUserFollowingCollection, unfollowingUserId));
-		const follows = await getDocs(currentUserFollowingCollection);
-		await setDoc(doc(userCollection, currentUserId), { following: follows.size }, { merge: true });
-
 		await deleteDoc(doc(followingUserFollowersCollection, currentUserId));
-		const followers = await getDocs(followingUserFollowersCollection);
-		await setDoc(doc(userCollection, unfollowingUserId), { followers: followers.size }, { merge: true });
-
 		const currentUserFollowers = await getDocs(currentUserFollowingCollection);
 		const allFollowers = [];
 		currentUserFollowers.forEach((doc) => {
@@ -74,7 +63,7 @@ const unfollowUser = async (currentUserId, unfollowingUserId, dispatch) => {
 		console.log('un-follow not done', error);
 	}
 };
-//! TODO commented for future
+
 const updateUserDB = async (updatedData) => {
 	console.log(updatedData);
 	try {
@@ -95,9 +84,7 @@ const updateUserDB = async (updatedData) => {
 const editUserProfileImage = async (userId, imageFile) => {
 	if (imageFile) {
 		try {
-			const storageRef = ref(storage, `users/${userId}`);
-			await uploadBytes(storageRef, imageFile);
-			const url = await getDownloadURL(storageRef);
+			const url = await uploadImageGetUrl(imageFile, `users/${userId}`);
 			console.log(url);
 			await setDoc(doc(userCollection, userId), { photoURL: url }, { merge: true });
 			return url;
@@ -108,14 +95,139 @@ const editUserProfileImage = async (userId, imageFile) => {
 	}
 	return;
 };
-// const createNewPost = () => {};
-// const editPost = () => {};
-// const addCommentsToPost = () => {};
-// const addThisPostLike = () => {};
-// Getting data from firestore
-// const getSpecificDocument = () => {};
-// const getAllDocuments = () => {};
-// const getAllCollections = () => {};
+
+const createNewPost = async (userId, data, setLoading) => {
+	setLoading(true);
+	try {
+		console.log(data);
+		const tempId = new Date().getTime();
+		const url = data.image && (await uploadImageGetUrl(data.image, `posts/${userId}/${tempId}`));
+		const documentId = await addDoc(postCollection, {
+			uid: userId,
+			caption: data.caption,
+			image: data.image && url,
+			timestamp: serverTimestamp(),
+		});
+		console.log(documentId.id);
+		await setDoc(
+			doc(postCollection, documentId.id),
+			{
+				postId: documentId.id,
+			},
+			{ merge: true },
+		);
+		setLoading(false);
+		return 'success';
+	} catch (error) {
+		console.log(error);
+		setLoading(false);
+		return `error ${error}`;
+	}
+};
+
+const editPost = (postId, updatedCaption) => {
+	try {
+		const postCollection = collection(db, `posts`);
+		setDoc(
+			doc(postCollection, postId),
+			{
+				caption: updatedCaption,
+			},
+			{ merge: true },
+		);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const addCommentsToPost = async (postId, uid, comment) => {
+	try {
+		const postCollection = collection(db, `posts/${postId}/comments`);
+		const documentId = await addDoc(postCollection, {
+			comment: comment,
+			from: uid,
+			timestamp: serverTimestamp(),
+		});
+		await setDoc(
+			doc(postCollection, documentId.id),
+			{
+				commentId: documentId.id,
+			},
+			{ merge: true },
+		);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const allCommentsFromAPost = async (postId) => {
+	try {
+		const postCollection = query(collection(db, `posts/${postId}/comments`), orderBy('timestamp', 'desc'));
+		const allComments = await getDocs(postCollection);
+		const allCommentsData = [];
+		allComments.forEach((doc) => {
+			allCommentsData.push(doc.data());
+		});
+		return allCommentsData;
+	} catch (error) {
+		console.log(error);
+		return [];
+	}
+};
+const deletePost = async (postId) => {
+	try {
+		const postCollection = collection(db, `posts`);
+		await deleteDoc(doc(postCollection, postId));
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const likePost = async (postId, uid) => {
+	try {
+		const postLikesCollection = collection(db, `posts/${postId}/likes`);
+		await setDoc(doc(postLikesCollection, uid), {
+			uid: uid,
+		});
+		const userCollection = collection(db, `users/${uid}/likes`);
+		await setDoc(doc(userCollection, postId), {
+			postId: postId,
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const unLikePost = async (postId, uid) => {
+	try {
+		const postLikesCollection = collection(db, `posts/${postId}/likes`);
+		await deleteDoc(doc(postLikesCollection, uid));
+		const userCollection = collection(db, `users/${uid}/likes`);
+		await deleteDoc(doc(userCollection, postId));
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const bookmarkPost = async (postId, uid) => {
+	try {
+		const userCollection = collection(db, `users/${uid}/bookmarks`);
+		await setDoc(doc(userCollection, postId), {
+			postId: postId,
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const unBookmarkPost = async (postId, uid) => {
+	try {
+		const userCollection = collection(db, `users/${uid}/bookmarks`);
+		await deleteDoc(doc(userCollection, postId));
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 const getSpecificUser = async (userId) => {
 	try {
@@ -147,4 +259,23 @@ const getAllUsers = async () => {
 	}
 };
 
-export { addUserToTheDB, getSpecificUser, getAllUsers, followUser, unfollowUser, updateUserDB, editUserProfileImage };
+export {
+	getSpecificCollection,
+	addUserToTheDB,
+	getSpecificUser,
+	getAllUsers,
+	followUser,
+	unfollowUser,
+	updateUserDB,
+	editUserProfileImage,
+	createNewPost,
+	db,
+	likePost,
+	deletePost,
+	addCommentsToPost,
+	editPost,
+	unLikePost,
+	bookmarkPost,
+	unBookmarkPost,
+	allCommentsFromAPost,
+};
