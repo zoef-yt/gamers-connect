@@ -10,6 +10,8 @@
 	--z-index-low-level-2: 4;
 
 	--colour-secondary-second: #698dc7;
+	--box-shadow-level-1: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+	--box-shadow-level-2: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme='dark'] {
@@ -30,6 +32,10 @@
 	width: 100%;
 }
 
+.relative {
+	position: relative;
+}
+
 .app-content {
 	position: relative;
 	grid-area: main-content;
@@ -39,6 +45,7 @@
 	padding: 0 2rem;
 	height: 100%;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .modal-opened {
@@ -78,6 +85,11 @@
 	padding: 1rem;
 	cursor: pointer;
 	aspect-ratio: unset;
+}
+
+.btn-disabled {
+	cursor: not-allowed;
+	background-color: var(--colour-text-grey);
 }
 
 @media screen and (max-width: 768px) {

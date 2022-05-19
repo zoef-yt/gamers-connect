@@ -7,7 +7,7 @@ const BookmarkPage = () => {
 		<div className='app-content'>
 			<h1 className='text-align-center'>All Bookmarks</h1>
 
-			{bookmarks.map((post) => {
+			{bookmarks.map((post, index) => {
 				const user = post.from;
 				return (
 					<SinglePostCard
@@ -16,6 +16,7 @@ const BookmarkPage = () => {
 						post={post.post}
 						timestamp={post.timestamp}
 						isBookMarked={true}
+						index={index}
 					/>
 				);
 			})}
