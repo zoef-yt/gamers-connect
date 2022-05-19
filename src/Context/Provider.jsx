@@ -1,12 +1,10 @@
-import { UserProvider, LikedProvider, BookmarkProvider } from './index';
+import { LikedProvider, BookmarkProvider } from './index';
 
 const Providers = ({ children }) => {
 	return (
-		<UserProvider>
-			<BookmarkProvider>
-				<LikedProvider>{children}</LikedProvider>
-			</BookmarkProvider>
-		</UserProvider>
+		<BookmarkProvider>
+			<LikedProvider>{children}</LikedProvider>
+		</BookmarkProvider>
 	);
 };
 

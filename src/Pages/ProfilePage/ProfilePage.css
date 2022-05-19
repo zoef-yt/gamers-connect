@@ -18,12 +18,40 @@
 	height: 100%;
 }
 
+.user-img img {
+	aspect-ratio: 1;
+	object-fit: cover;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+
+.user-img:hover img {
+	filter: blur(1.2px);
+}
+
+.profile-pic-edit-btn {
+	visibility: hidden;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transform: scale(2);
+}
+
+.user-img:hover .profile-pic-edit-btn {
+	visibility: visible;
+	z-index: var(--z-index-low-level-2);
+	transition: all 0.2s ease-in-out;
+}
+
 .edit-profile-button {
 	margin: 0 1rem;
 	padding: 1rem;
 	cursor: pointer;
 	border-radius: 1rem;
 	background-color: var(--colour-primary-second);
+	color: var(--colour-text-white);
 }
 
 .user-img img {

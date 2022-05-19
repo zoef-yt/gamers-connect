@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { updateUserDB } from '../../Firebase/FirebaseFirestore';
 
 const initialState = {
 	authUser: null,
@@ -22,6 +23,12 @@ const authSlice = createSlice({
 			state.following = action.payload.following;
 			state.posts = action.payload.posts;
 		},
+
+		updateUserDetails: (state, action) => {
+			updateUserDB(action.payload);
+			state.authUser = { ...state.authUser, ...action.payload };
+		},
+
 		setAuthUser: (state, action) => {
 			state.authUser = action.payload;
 		},
@@ -45,5 +52,5 @@ const authSlice = createSlice({
 		},
 	},
 });
-export const { setAuthUser, setIsLoginForm, setIsLoading, setError, setFollower, setFollowing, setPosts } = authSlice.actions;
+export const { setAuthUser, setIsLoginForm, setIsLoading, setError, setFollower, setFollowing, setPosts, updateUserDetails } = authSlice.actions;
 export default authSlice.reducer;

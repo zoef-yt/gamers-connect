@@ -1,7 +1,7 @@
 import { BookmarksIcon, ExploreIcon, HalfMoonIcon, HomeIcon, LogoutIcon, MultipleHeartIcon, ProfileIcon, SunIcon } from '../../Assets/AllSVG.jsx';
 import { logOut } from '../../Firebase/FirebaseAuth.js';
 import { SideBarItem } from './SidebarItem.jsx';
-import { setTheme } from '../../store/Theme/ThemeSlice.jsx';
+import { setTheme } from '../../store/Theme/ThemeSlice';
 import { useDispatch, useSelector } from 'react-redux';
 const Sidebar = ({ isSideBarOpen, closeSideBar }) => {
 	const { theme } = useSelector((store) => store.theme);
