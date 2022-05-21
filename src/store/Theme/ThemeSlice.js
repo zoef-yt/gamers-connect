@@ -9,7 +9,6 @@ const themeSlice = createSlice({
 	initialState,
 	reducers: {
 		setTheme: (state) => {
-			console.log('Triggered');
 			document.documentElement.setAttribute('data-theme', state.theme === 'light' ? 'dark' : 'light');
 			localStorage.setItem('theme', state.theme === 'light' ? 'dark' : 'light');
 			state.theme = state.theme === 'light' ? 'dark' : 'light';

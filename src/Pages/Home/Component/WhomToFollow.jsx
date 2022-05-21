@@ -11,7 +11,6 @@ export const WhomToFollow = (props) => {
 
 	const followHandler = async (e, currentUserId, toFollowId) => {
 		e.stopPropagation();
-		console.log(currentUserId, toFollowId);
 		if (authUser) {
 			await followUser(currentUserId, toFollowId, dispatch);
 		} else {
@@ -21,7 +20,6 @@ export const WhomToFollow = (props) => {
 
 	const unfollowingHandler = async (e, currentUserId, toUnfollowId) => {
 		e.stopPropagation();
-		console.log(currentUserId, toUnfollowId);
 		if (authUser) {
 			await unfollowUser(currentUserId, toUnfollowId, dispatch);
 		} else {

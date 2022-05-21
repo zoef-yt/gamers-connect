@@ -9,7 +9,6 @@ import { openModal } from '../../../store/Modal/ModalSlice';
 const UserDetails = ({ uid }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	console.log(uid);
 	const { authUser, followers: authUserFollowers, following: authUserFollowings } = useSelector((store) => store.auth);
 	const { allPosts } = useSelector((store) => store.allPosts);
 	const { allUsers } = useSelector((store) => store.allUsers);
@@ -59,7 +58,6 @@ const UserDetails = ({ uid }) => {
 	}, [uid, authUserFollowings]);
 
 	const followHandler = async (currentUserId, toFollowId) => {
-		console.log(authUser);
 		if (authUser) {
 			await followUser(currentUserId, toFollowId, dispatch);
 		} else {

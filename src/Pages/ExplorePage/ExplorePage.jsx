@@ -13,7 +13,6 @@ export const ExplorePage = () => {
 	};
 	const getSortedData = (data) => {
 		if (allPosts) {
-			console.log('Inside this');
 			if (selectedFilter === 'New') {
 				return allPosts;
 			}
@@ -21,10 +20,7 @@ export const ExplorePage = () => {
 				return [...data].reverse();
 			}
 			if (selectedFilter === 'Trending') {
-				return [...data].sort((a, b) => {
-					console.log(a.totalLikes, b.totalLikes);
-					return b.totalLikes - a.totalLikes;
-				});
+				return [...data].sort((a, b) => b.totalLikes - a.totalLikes);
 			}
 		}
 	};

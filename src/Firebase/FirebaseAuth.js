@@ -77,7 +77,6 @@ const emailSignUpHandler = async (errorHandler, setIsLoading, dispatch, setTextF
 			photoURL: defaultImage,
 		});
 		const currentUser = auth.currentUser;
-		console.log(currentUser);
 		await addUserToTheDB(auth.currentUser.uid, getNewUserObject(currentUser));
 	} catch (error) {
 		logOut();
@@ -118,7 +117,6 @@ const emailLoginHandler = async (errorHandler, setIsLoading, dispatch, setTextFi
 		await signInWithEmailAndPassword(auth, email, password);
 		dispatch(setIsLoading(false));
 	} catch (error) {
-		console.log(error.message);
 		errorHandler(true, error.message);
 		dispatch(setIsLoading(false));
 	}
@@ -133,7 +131,6 @@ const googleAuthHandler = async (errorHandler, setIsLoading, dispatch) => {
 		await signInWithPopup(auth, provider);
 		const currentUser = auth.currentUser;
 		const isUserInDb = await getSpecificUser(auth.currentUser.uid);
-		console.log(isUserInDb);
 		!isUserInDb && (await addUserToTheDB(auth.currentUser.uid, getNewUserObject(currentUser)));
 		dispatch(setIsLoading(false));
 	} catch (error) {

@@ -4,7 +4,6 @@ import { SinglePostCard } from '../../../Components/SinglePostCard/SinglePostCar
 const UserPostHolder = ({ uid }) => {
 	const { allPosts } = useSelector((store) => store.allPosts);
 	const [currentUserPosts, setCurrentUserPosts] = useState([]);
-	console.log(uid);
 	useEffect(() => {
 		const currentUserPost = allPosts.filter((post) => {
 			return post.uid === uid;

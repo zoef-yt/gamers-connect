@@ -13,7 +13,6 @@ const AllPostComments = ({ closeComments, commentSection, photoURL, displayName,
 	const addComment = async () => {
 		if (authUser) {
 			if (userComment) {
-				console.log(userComment);
 				await addCommentsToPost(postId, userId, userComment);
 				setUserComment('');
 				setTriggerEffect(!triggerEffect);
@@ -29,7 +28,6 @@ const AllPostComments = ({ closeComments, commentSection, photoURL, displayName,
 
 	const getComments = async () => {
 		const comments = await allCommentsFromAPost(postId);
-		console.log(comments);
 		setAllComments(comments);
 	};
 
@@ -56,7 +54,10 @@ const AllPostComments = ({ closeComments, commentSection, photoURL, displayName,
 			</div>
 
 			{allComments.length > 0 ? (
-				allComments.map((comment) => <SingleComment comment={comment.comment} uid={comment.from} timestamp={comment.timestamp} />)
+				allComments.map((comment) => {
+					const { comment: commentText, from, timestamp } = comment;
+					return <SingleComment comment={commentText} uid={from} timestamp={timestamp} />;
+				})
 			) : (
 				<h1>No Comments</h1>
 			)}

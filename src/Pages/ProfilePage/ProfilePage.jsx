@@ -8,7 +8,6 @@ const ProfilePage = () => {
 	const { uid } = useParams();
 	const [userId, setUserId] = useState(null);
 	useEffect(() => {
-		console.log(uid);
 		setUserId(uid);
 	}, [uid]);
 	return (
