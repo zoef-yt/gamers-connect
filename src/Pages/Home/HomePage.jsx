@@ -10,8 +10,9 @@ const Home = () => {
 	const { allUsers } = useSelector((store) => store.allUsers);
 	const { allPosts } = useSelector((store) => store.allPosts);
 	const [homePageContent, setHomePageContent] = useState([]);
-	const currentUserHome = allPosts.filter((post) => following.findIndex((user) => user.id === post.uid) !== -1);
+	const currentUserHome = allPosts.filter((post) => following.findIndex((user) => user.id === post.uid || authUser?.uid === post.uid) !== -1);
 	useEffect(() => {
+		console.log('allPosts', currentUserHome);
 		setHomePageContent(currentUserHome);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [allPosts, following]);
@@ -27,7 +28,8 @@ const Home = () => {
 			</div>
 			<div>
 				{allPosts && homePageContent.length > 0 ? (
-					homePageContent.map((post) => {
+					homePageContent.map((post, index) => {
+						console.log(post);
 						return (
 							<SinglePostCard
 								key={post.postId}
@@ -35,7 +37,9 @@ const Home = () => {
 								image={post.image}
 								uid={post.uid}
 								postId={post.postId}
+								index={index}
 								timestamp={post.timestamp}
+								postLikes={post.totalLikes ?? 0}
 							/>
 						);
 					})

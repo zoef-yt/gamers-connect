@@ -1,0 +1,17 @@
+.select-filterBy {
+	margin: 0 0.5rem;
+	width: 20rem;
+	height: 4rem;
+	max-width: 20rem;
+	border: none;
+	outline: 1px solid var(--colour-primary-second);
+	background-color: var(--colour-black-third);
+	color: var(--colour-text-white);
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+}
+
+.select-tag > option {
+	padding: 1rem 0;
+	color: var(--colour-text-white);
+}

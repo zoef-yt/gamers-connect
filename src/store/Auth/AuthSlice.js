@@ -51,6 +51,14 @@ const authSlice = createSlice({
 		setBookmarked: (state, action) => {
 			state.bookmarked = action.payload;
 		},
+		setInitialState: (state) => {
+			state.authUser = null;
+			state.followers = [];
+			state.following = [];
+			state.posts = [];
+			state.likedList = [];
+			state.bookmarked = [];
+		},
 	},
 });
 
@@ -65,5 +73,6 @@ export const {
 	updateUserDetails,
 	setLikeList,
 	setBookmarked,
+	setInitialState,
 } = authSlice.actions;
 export default authSlice.reducer;

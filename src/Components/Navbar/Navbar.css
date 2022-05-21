@@ -50,6 +50,52 @@
 	transform: rotateZ(146deg) scale(0.6, 0.8) translateY(0.8px) translateX(-11px);
 }
 
+.searchbar-holder {
+	position: relative;
+}
+
+.searchbar-holder .text-field {
+	margin: 1rem 0;
+}
+
+.searchbar-holder input:focus + .search-data {
+	height: min-content;
+	max-height: 30rem;
+	transform: scaleX(1);
+	transform-style: preserve-3d;
+}
+
+.search-data {
+	overflow: auto;
+	position: absolute;
+	top: 5.8rem;
+	left: 0;
+	z-index: var(--z-index-card-level-2);
+	max-height: 30rem;
+	transition: all 0.3s ease-in-out;
+	width: 100%;
+	background-color: var(--colour-secondary-second);
+	border-radius: 1rem;
+	transform: scaleX(0);
+	transform-origin: right;
+}
+
+.search-data div {
+	height: 5rem;
+	width: 100%;
+	display: flex;
+	gap: 2rem;
+	align-items: center;
+	padding: 0 1rem;
+	margin: 1rem 0;
+	cursor: pointer;
+}
+.search-data div img {
+	width: 4rem;
+	height: 4rem;
+	border-radius: 50%;
+}
+
 .sidebar {
 	overflow-y: auto;
 	overflow-x: hidden;

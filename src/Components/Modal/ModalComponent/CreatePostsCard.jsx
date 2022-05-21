@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../../store/Modal/ModalSlice';
 export const CreatePostsCard = () => {
 	const { authUser } = useSelector((store) => store.auth);
+	console.log(authUser);
 	const [createPostError, setCreatePostError] = useState({ hasError: false, errorMessage: '' });
 	const dispatch = useDispatch();
 	const [createPost, setCreatePost] = useState({

@@ -1,17 +1,51 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SinglePostCard } from '../../Components';
 import '../Home/HomePage.css';
+import './ExplorePage.css';
 
 export const ExplorePage = () => {
 	const { allPosts } = useSelector((store) => store.allPosts);
-
+	const filterBy = ['New', 'Old', 'Trending'];
+	const [selectedFilter, setSelectedFilter] = useState(filterBy[0]);
+	const optionsHandler = (e) => {
+		setSelectedFilter(e.target.value);
+	};
+	const getSortedData = (data) => {
+		if (allPosts) {
+			console.log('Inside this');
+			if (selectedFilter === 'New') {
+				return allPosts;
+			}
+			if (selectedFilter === 'Old') {
+				return [...data].reverse();
+			}
+			if (selectedFilter === 'Trending') {
+				return [...data].sort((a, b) => {
+					console.log(a.totalLikes, b.totalLikes);
+					return b.totalLikes - a.totalLikes;
+				});
+			}
+		}
+	};
 	return (
 		<div className='app-content'>
 			<div>
 				<h1 className='text-align-center'>Explore Page</h1>
+
+				<div className='flex-column '>
+					<select value={selectedFilter} className='select-filterBy' onChange={optionsHandler}>
+						{filterBy.map((tag) => (
+							<option key={tag} value={tag}>
+								{tag}
+							</option>
+						))}
+					</select>
+				</div>
+
 				<div>
 					{allPosts &&
-						allPosts.map((post) => {
+						getSortedData(allPosts).map((post, index) => {
 							return (
 								<SinglePostCard
 									key={post.postId}
@@ -19,7 +53,9 @@ export const ExplorePage = () => {
 									image={post.image}
 									uid={post.uid}
 									postId={post.postId}
+									index={index}
 									timestamp={post.timestamp}
+									postLikes={post.totalLikes ?? 0}
 								/>
 							);
 						})}

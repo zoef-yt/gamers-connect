@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import './Navbar.css';
 import { Sidebar } from './Sidebar';
@@ -14,7 +15,7 @@ const Navbar = () => {
 				<NavLink className='navbar-brand ' to='/'>
 					Gamers Connect
 				</NavLink>
-				<input type='search' className='text-field' placeholder='Search' />
+				<SearchBar />
 				<div className='navbar-cta'>
 					<div
 						onClick={() => (!isSideBarOpen ? openSideBar() : closeSideBar())}
@@ -32,3 +33,31 @@ const Navbar = () => {
 };
 
 export { Navbar };
+
+const SearchBar = () => {
+	const navigate = useNavigate();
+	const { allUsers } = useSelector((store) => store.allUsers);
+	const [search, setSearch] = useState('');
+	const searchedData = search !== '' ? allUsers.filter((user) => user.displayName.toLowerCase().includes(search.toLowerCase())) : allUsers;
+	return (
+		<div className='relative searchbar-holder'>
+			<input type='search' className='text-field' placeholder='Search' value={search} onChange={(e) => setSearch(e.target.value)} />
+			<div className='search-data'>
+				{searchedData.map((user) => {
+					return (
+						<div
+							key={user.uid}
+							className='flex-row'
+							onClick={() => {
+								navigate(`/profile/${user.uid}`);
+							}}
+						>
+							<img src={user.photoURL} alt={user.displayName} />
+							<p>{user.displayName}</p>
+						</div>
+					);
+				})}
+			</div>
+		</div>
+	);
+};

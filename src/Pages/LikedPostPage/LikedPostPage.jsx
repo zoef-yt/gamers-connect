@@ -8,7 +8,7 @@ const LikedPostPage = () => {
 	return (
 		<div className='app-content'>
 			<h1 className='text-align-center'>All Liked Post</h1>
-			{likedListPosts.map((post) => {
+			{likedListPosts.map((post, index) => {
 				return (
 					<SinglePostCard
 						key={post.postId}
@@ -17,6 +17,7 @@ const LikedPostPage = () => {
 						uid={post.uid}
 						postId={post.postId}
 						timestamp={post.timestamp}
+						index={index}
 					/>
 				);
 			})}

@@ -10,7 +10,7 @@ const BookmarkPage = () => {
 			<h1 className='text-align-center'>All Bookmarks</h1>
 
 			{bookmarkList.length > 0 ? (
-				bookmarkList.map((post) => {
+				bookmarkList.map((post, index) => {
 					return (
 						<SinglePostCard
 							key={post.postId}
@@ -19,6 +19,7 @@ const BookmarkPage = () => {
 							uid={post.uid}
 							postId={post.postId}
 							timestamp={post.timestamp}
+							index={index}
 						/>
 					);
 				})
