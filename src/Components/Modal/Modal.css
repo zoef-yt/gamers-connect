@@ -35,6 +35,7 @@
 	margin: 1rem 0;
 	resize: none;
 }
+
 .modal-card-footer {
 	display: flex;
 	flex-direction: column;
