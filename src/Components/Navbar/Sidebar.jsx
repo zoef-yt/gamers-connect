@@ -30,7 +30,7 @@ const Sidebar = ({ isSideBarOpen, closeSideBar }) => {
 			<SideBarItem close={closeSideBar} icon={<ExploreIcon />} text='Explore' navigateTo='/explore' />
 			<SideBarItem close={closeSideBar} icon={<BookmarksIcon />} text='Bookmark' navigateTo='/bookmark' />
 			<SideBarItem close={closeSideBar} icon={<MultipleHeartIcon />} text='Liked' navigateTo='/likes' />
-			<SideBarItem close={closeSideBar} icon={<ProfileIcon />} text='Profile' navigateTo={`/profile/${authUser?.uid}`} />
+			<SideBarItem close={closeSideBar} icon={<ProfileIcon />} text='Profile' navigateTo={authUser ? `/profile/${authUser?.uid}` : '/auth'} />
 
 			<div title='Change theme' onClick={() => dispatch(setTheme())} className='sidebar-item'>
 				{theme === 'dark' ? <SunIcon /> : <HalfMoonIcon />}

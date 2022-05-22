@@ -99,7 +99,6 @@ const editUserProfileImage = async (userId, imageFile) => {
 const createNewPost = async (userId, data, setLoading) => {
 	setLoading(true);
 	try {
-		console.log(data);
 		const tempId = new Date().getTime();
 		const url = data.image && (await uploadImageGetUrl(data.image, `posts/${userId}/${tempId}`));
 		const documentId = await addDoc(postCollection, {
@@ -108,7 +107,6 @@ const createNewPost = async (userId, data, setLoading) => {
 			image: data.image && url,
 			timestamp: serverTimestamp(),
 		});
-		console.log(documentId.id);
 		await setDoc(
 			doc(postCollection, documentId.id),
 			{
@@ -193,6 +191,14 @@ const likePost = async (postId, uid) => {
 		await setDoc(doc(userCollection, postId), {
 			postId: postId,
 		});
+		const posts = await getDocs(postLikesCollection);
+		await setDoc(
+			doc(postCollection, postId),
+			{
+				totalLikes: posts.size,
+			},
+			{ merge: true },
+		);
 	} catch (error) {
 		console.log(error);
 	}
@@ -204,6 +210,14 @@ const unLikePost = async (postId, uid) => {
 		await deleteDoc(doc(postLikesCollection, uid));
 		const userCollection = collection(db, `users/${uid}/likes`);
 		await deleteDoc(doc(userCollection, postId));
+		const posts = await getDocs(postLikesCollection);
+		await setDoc(
+			doc(postCollection, postId),
+			{
+				totalLikes: posts.size,
+			},
+			{ merge: true },
+		);
 	} catch (error) {
 		console.log(error);
 	}
@@ -259,6 +273,16 @@ const getAllUsers = async () => {
 	}
 };
 
+const getCollectionsSize = async (path) => {
+	try {
+		const pathCollection = collection(db, path);
+		const allDocs = await getDocs(pathCollection);
+		return allDocs.size;
+	} catch (error) {
+		console.log(error);
+		return 0;
+	}
+};
 export {
 	getSpecificCollection,
 	addUserToTheDB,
@@ -278,4 +302,5 @@ export {
 	bookmarkPost,
 	unBookmarkPost,
 	allCommentsFromAPost,
+	getCollectionsSize,
 };

@@ -1,10 +1,19 @@
-import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { BookMarkedIcon, BookmarkOutlineIcon, CommentsIcon, DoneIcon, EditIcon, HeartFilledIcon, HeartOutlineIcon } from '../../Assets/AllSVG';
-import { bookmarkPost, db, deletePost, editPost, likePost, unBookmarkPost, unLikePost } from '../../Firebase/FirebaseFirestore';
+import { useNavigate } from 'react-router-dom';
+import {
+	BookMarkedIcon,
+	BookmarkOutlineIcon,
+	CommentsIcon,
+	DeleteIcon,
+	DoneIcon,
+	EditIcon,
+	HeartFilledIcon,
+	HeartOutlineIcon,
+} from '../../Assets/AllSVG';
+import { bookmarkPost, deletePost, editPost, likePost, unBookmarkPost, unLikePost } from '../../Firebase/FirebaseFirestore';
 import { AllPostComments } from './AllPostComments';
-const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp }) => {
+const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp, postLikes }) => {
 	const { allUsers } = useSelector((state) => state.allUsers);
 	const { authUser } = useSelector((state) => state.auth);
 
@@ -13,6 +22,7 @@ const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp }) =
 	const [edit, setEdit] = useState({ isEditing: false, caption: caption });
 	const openComments = () => setCommentSection(true);
 	const closeComments = () => setCommentSection(false);
+	const navigate = useNavigate();
 	const getDelay = (index) => {
 		const delay = 150,
 			maxDelay = 700;
@@ -22,32 +32,44 @@ const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp }) =
 	const { likedList } = useSelector((state) => state.auth);
 	const isLiked = likedList.findIndex((post) => post.postId === postId) === -1 ? false : true;
 	const handleLike = () => {
-		if (isLiked) {
-			unLikePost(postId, authUser.uid);
+		if (authUser) {
+			if (isLiked) {
+				unLikePost(postId, authUser.uid);
+			} else {
+				likePost(postId, authUser.uid);
+			}
 		} else {
-			likePost(postId, authUser.uid);
+			navigate('/auth');
 		}
 	};
 
 	const { bookmarked } = useSelector((state) => state.auth);
 	const isBookmarked = bookmarked.findIndex((post) => post.postId === postId) === -1 ? false : true;
 	const handleBookmark = () => {
-		if (isBookmarked) {
-			unBookmarkPost(postId, authUser.uid);
+		if (authUser) {
+			if (isBookmarked) {
+				unBookmarkPost(postId, authUser.uid);
+			} else {
+				bookmarkPost(postId, authUser.uid);
+			}
 		} else {
-			bookmarkPost(postId, authUser.uid);
+			navigate('/auth');
 		}
 	};
 	useEffect(() => {
 		setUserInfo(allUsers.find((user) => user.uid === uid));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+	const dateOptions = {
+		timeStyle: 'short',
+		dateStyle: 'medium',
+	};
 	const { photoURL, displayName } = userInfo;
 
 	const handleEdit = () => {
-		if (edit.isEditing) {
+		if (edit.caption === '') {
+			setEdit({ isEditing: false, caption: caption });
+		} else if (edit.isEditing) {
 			caption !== edit.caption && editPost(postId, edit.caption);
 			setEdit({ ...edit, isEditing: false });
 		} else {
@@ -60,11 +82,13 @@ const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp }) =
 			{uid === authUser?.uid && (
 				<div className='edit-delete-container'>
 					{edit.isEditing ? <DoneIcon onClick={handleEdit} /> : <EditIcon onClick={handleEdit} />}
-					<p onClick={() => deletePost(postId)}>Delete</p>
+					<p onClick={() => deletePost(postId)}>
+						<DeleteIcon />
+					</p>
 				</div>
 			)}
 
-			<div className='post-header'>
+			<div className='post-header' onClick={() => navigate(`/profile/${uid}`)}>
 				<img src={photoURL} alt={displayName} />
 				<div>
 					<h4>{displayName}</h4>
@@ -87,19 +111,23 @@ const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp }) =
 					edit.caption
 				)}
 			</div>
+
 			{image && (
 				<div className='post-image'>
-					<img src={image} alt={caption} />
+					<img src={image} loading='lazy' alt={caption} />
 				</div>
 			)}
+
 			<div className='post-cta'>
 				<div className='cta-button ' onClick={handleLike}>
-					<LikeButtonComponent isLiked={isLiked} postId={postId} />
+					<LikeButtonComponent isLiked={isLiked} postId={postId} postLikes={postLikes} />
 				</div>
+
 				<div onClick={openComments} className='cta-button'>
 					<CommentsIcon />
 					<p>Comments</p>
 				</div>
+
 				<div className='cta-button' onClick={handleBookmark}>
 					{isBookmarked ? <BookMarkedIcon /> : <BookmarkOutlineIcon />}
 					<p>Bookmark</p>
@@ -119,17 +147,7 @@ const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp }) =
 };
 export { SinglePostCard };
 
-const LikeButtonComponent = ({ isLiked, postId }) => {
-	const [postLikes, setPostLikes] = useState(0);
-	useEffect(() => {
-		getLike();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isLiked]);
-	const getLike = async () => {
-		const postLikesCollection = collection(db, `posts/${postId}/likes`);
-		const posts = await getDocs(postLikesCollection);
-		setPostLikes(posts.size);
-	};
+const LikeButtonComponent = ({ isLiked, postLikes }) => {
 	return (
 		<>
 			{isLiked ? <HeartFilledIcon style={{ fill: 'red', color: 'red' }} /> : <HeartOutlineIcon />}

@@ -213,6 +213,7 @@
 }
 
 .post-header {
+	cursor: pointer;
 	display: flex;
 	flex-direction: row;
 	gap: 1rem;
@@ -221,8 +222,9 @@
 }
 
 .post-header img {
-	max-width: 5rem;
-	max-height: 5rem;
+	object-fit: cover;
+	width: 5rem;
+	height: 5rem;
 	border-radius: 50%;
 }
 
@@ -268,6 +270,21 @@
 
 .cta-button:hover {
 	background-color: var(--colour-primary-second);
+}
+
+.edit-delete-container {
+	position: absolute;
+	display: flex;
+	top: 1rem;
+	right: 1rem;
+	gap: 1rem;
+}
+.edit-delete-container :hover {
+	cursor: pointer;
+}
+
+.post-content input.text-field {
+	width: 100%;
 }
 
 @media screen and (max-width: 768px) {

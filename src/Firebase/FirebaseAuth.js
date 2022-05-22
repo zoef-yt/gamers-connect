@@ -117,7 +117,6 @@ const emailLoginHandler = async (errorHandler, setIsLoading, dispatch, setTextFi
 		await signInWithEmailAndPassword(auth, email, password);
 		dispatch(setIsLoading(false));
 	} catch (error) {
-		console.log(error.message);
 		errorHandler(true, error.message);
 		dispatch(setIsLoading(false));
 	}
@@ -140,9 +139,9 @@ const googleAuthHandler = async (errorHandler, setIsLoading, dispatch) => {
 	}
 };
 
-const logOut = () => {
+const logOut = async () => {
 	try {
-		signOut(auth);
+		await signOut(auth);
 	} catch (error) {
 		console.log(error);
 	}

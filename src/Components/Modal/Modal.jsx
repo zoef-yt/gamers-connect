@@ -31,7 +31,7 @@ export default ModalComponent;
 const EditComponent = () => {
 	const dispatch = useDispatch();
 	const { authUser } = useSelector((store) => store.auth);
-	const { bio, displayName, url } = authUser;
+	const { bio, displayName, url } = authUser ?? {};
 	const [userDetails, setUserDetails] = useState({ name: displayName, portfolioLink: url, biography: bio });
 
 	const onChangeHandler = (e) => {

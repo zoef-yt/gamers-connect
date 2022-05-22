@@ -1,7 +1,7 @@
 import { getSpecificUser, db } from './FirebaseFirestore';
 import { auth } from './FirebaseAuth';
 import { onAuthStateChanged } from 'firebase/auth';
-import { setAuthUser, setBookmarked, setFollower, setFollowing, setLikeList, setPosts } from '../store/Auth/AuthSlice';
+import { setAuthUser, setBookmarked, setFollower, setFollowing, setInitialState, setLikeList, setPosts } from '../store/Auth/AuthSlice';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { setAllUser } from '../store/AllUser/AllUserSlice';
 import { setAllPosts } from '../store/AllPosts/AllPosts';
@@ -23,7 +23,7 @@ const authChangeListener = (dispatch) => {
 					dispatch(setAuthUser(authenticatedUser));
 				}, 1000);
 		} else {
-			dispatch(setAuthUser(null));
+			dispatch(setInitialState());
 		}
 	});
 };
