@@ -1,0 +1,158 @@
+.chat-screen {
+	width: 100%;
+	height: calc(100% - (4rem + 3vw));
+	position: relative;
+}
+
+.single-chat-tile {
+	display: flex;
+	flex-direction: row;
+	gap: 2rem;
+	justify-content: start;
+	align-items: center;
+	border-radius: 1rem;
+	margin: 1rem 0;
+	padding: 1rem;
+}
+
+.single-chat-tile p {
+	font-size: 3rem;
+}
+
+.single-chat-tile:hover {
+	cursor: pointer;
+	background-color: var(--colour-secondary-second);
+}
+
+/* converstions */
+
+.conversation-screen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--colour-secondary-second);
+	border-radius: 1rem;
+	box-shadow: var(--box-shadow-level-3);
+	animation-name: conversation-screen-in;
+	animation-duration: 300ms;
+	animation-fill-mode: forwards;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: stretch;
+}
+
+@keyframes conversation-screen-in {
+	0% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+	80% {
+		opacity: 1;
+		transform: translateX(-5%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.conversation-screen-header {
+	padding: 1rem;
+	margin: 1rem;
+	display: flex;
+	gap: 2rem;
+}
+
+.conversation-screen-header p {
+	font-size: 3rem;
+}
+
+.conversation-screen-body {
+	flex-grow: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	display: flex;
+	flex-direction: column;
+	scroll-behavior: smooth;
+}
+
+.conversation-screen-body > :first-child {
+	margin-top: auto;
+}
+
+.send-message-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem;
+	margin: 1rem;
+}
+
+.send-message-container input {
+	flex-grow: 1;
+}
+
+.single-conversation-tile {
+	display: flex;
+	gap: 1rem;
+	justify-content: start;
+	align-items: flex-end;
+	border-radius: 1rem;
+	margin: 1rem 0;
+	padding: 1rem;
+	animation-name: conversation-tile-in;
+	animation-duration: 400ms;
+	animation-fill-mode: forwards;
+}
+
+.single-conversation-tile img {
+	flex-shrink: 0;
+}
+
+.single-conversation-tile.isMe {
+	justify-content: flex-start;
+	flex-direction: row-reverse;
+	text-align: right;
+	animation-name: conversation-tile-in-is-me;
+	animation-duration: 400ms;
+	animation-fill-mode: forwards;
+}
+
+@keyframes conversation-tile-in {
+	0% {
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+	80% {
+		opacity: 1;
+		transform: translateX(5%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes conversation-tile-in-is-me {
+	0% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+	80% {
+		opacity: 1;
+		transform: translateX(-5%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.conversation-bubble {
+	width: 60rem;
+	word-break: break-all;
+}

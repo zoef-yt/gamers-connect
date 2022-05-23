@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { BookmarkPage, Home, LikedPostPage, PageNotFound, ProfilePage, ExplorePage } from '../../Pages';
+import { BookmarkPage, Home, LikedPostPage, PageNotFound, ProfilePage, ExplorePage, ChatPage } from '../../Pages';
 import { Auth } from '../Auth/Auth';
 import { PrivateRoute } from '../Auth/PrivateRoute';
 import { UnAuthenticatedRoute } from '../Auth/UnAuthenticatedRoute';
@@ -10,6 +10,7 @@ const AppRoutes = () => {
 			<Route element={<PrivateRoute />}>
 				<Route path='/bookmark' element={<BookmarkPage />} />
 				<Route path='/likes' element={<LikedPostPage />} />
+				<Route path='/chat' element={<ChatPage />} />
 			</Route>
 
 			<Route element={<UnAuthenticatedRoute />}>

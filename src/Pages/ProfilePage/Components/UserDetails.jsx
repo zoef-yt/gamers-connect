@@ -5,6 +5,7 @@ import { EditIcon } from '../../../Assets/AllSVG';
 import { editUserProfileImage, followUser, getCollectionsSize, unfollowUser } from '../../../Firebase/FirebaseFirestore';
 import { setAuthUser } from '../../../store/Auth/AuthSlice';
 import { openModal } from '../../../store/Modal/ModalSlice';
+import { startChatHandler } from '../../Chat/Chat';
 
 const UserDetails = ({ uid }) => {
 	const dispatch = useDispatch();
@@ -103,14 +104,25 @@ const UserDetails = ({ uid }) => {
 									Edit profile
 								</button>
 							) : (
-								<button
-									onClick={() => {
-										isFollowing ? unfollowingHandler(authUser?.uid, uid) : followHandler(authUser?.uid, uid);
-									}}
-									className='edit-profile-button btn'
-								>
-									{isFollowing ? 'unfollow' : 'Follow'}
-								</button>
+								<>
+									<button
+										onClick={() => {
+											isFollowing ? unfollowingHandler(authUser?.uid, uid) : followHandler(authUser?.uid, uid);
+										}}
+										className='edit-profile-button btn'
+									>
+										{isFollowing ? 'unfollow' : 'Follow'}
+									</button>
+									<button
+										onClick={async () => {
+											await startChatHandler(authUser?.uid, uid);
+											navigate('/chat');
+										}}
+										className='edit-profile-button btn'
+									>
+										Chat
+									</button>
+								</>
 							))}
 					</p>
 				</div>

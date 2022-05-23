@@ -12,10 +12,12 @@ const AllPostComments = ({ closeComments, commentSection, photoURL, displayName,
 	const navigate = useNavigate();
 	const addComment = async () => {
 		if (authUser) {
-			if (userComment) {
-				await addCommentsToPost(postId, userId, userComment);
-				setUserComment('');
-				setTriggerEffect(!triggerEffect);
+			if (userComment.trim() !== '') {
+				if (userComment) {
+					await addCommentsToPost(postId, userId, userComment);
+					setUserComment('');
+					setTriggerEffect(!triggerEffect);
+				}
 			}
 		} else {
 			navigate('/auth');
