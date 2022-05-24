@@ -36,6 +36,8 @@
 
 ## **FEATURES**
 
+Full app is responsive to mobile size.
+
 ### Homepage
 - On homepage you can see card which allows you to follow users who are on the app.
 > ![image](https://user-images.githubusercontent.com/67889207/170026435-e80104c9-3a87-4fe0-a2c1-54449e5315c3.png)
