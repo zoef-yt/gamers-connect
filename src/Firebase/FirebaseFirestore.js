@@ -105,6 +105,7 @@ const createNewPost = async (userId, data, setLoading) => {
 			uid: userId,
 			caption: data.caption,
 			image: data.image && url,
+			totalLikes: 0,
 			timestamp: serverTimestamp(),
 		});
 		await setDoc(

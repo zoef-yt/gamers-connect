@@ -1,5 +1,6 @@
 import {
 	BookmarksIcon,
+	ChatIcon,
 	ExploreIcon,
 	HalfMoonIcon,
 	HomeIcon,
@@ -28,6 +29,7 @@ const Sidebar = ({ isSideBarOpen, closeSideBar }) => {
 		<aside className={`sidebar ${isSideBarOpen && 'sidebar-opened'}`}>
 			<SideBarItem close={closeSideBar} icon={<HomeIcon />} text='Home' navigateTo='/' />
 			<SideBarItem close={closeSideBar} icon={<ExploreIcon />} text='Explore' navigateTo='/explore' />
+			<SideBarItem close={closeSideBar} icon={<ChatIcon />} text='Chat' navigateTo='/chat' />
 			<SideBarItem close={closeSideBar} icon={<BookmarksIcon />} text='Bookmark' navigateTo='/bookmark' />
 			<SideBarItem close={closeSideBar} icon={<MultipleHeartIcon />} text='Liked' navigateTo='/likes' />
 			<SideBarItem close={closeSideBar} icon={<ProfileIcon />} text='Profile' navigateTo={authUser ? `/profile/${authUser?.uid}` : '/auth'} />

@@ -8,20 +8,25 @@ const LikedPostPage = () => {
 	return (
 		<div className='app-content'>
 			<h1 className='text-align-center'>All Liked Post</h1>
-			{likedListPosts.map((post, index) => {
-				return (
-					<SinglePostCard
-						key={post.postId}
-						caption={post.caption}
-						image={post.image}
-						uid={post.uid}
-						postId={post.postId}
-						timestamp={post.timestamp}
-						index={index}
-					/>
-				);
-			})}
+			{likedListPosts.length > 0 ? (
+				likedListPosts.map((post, index) => {
+					return (
+						<SinglePostCard
+							key={post.postId}
+							caption={post.caption}
+							image={post.image}
+							uid={post.uid}
+							postId={post.postId}
+							timestamp={post.timestamp}
+							index={index}
+						/>
+					);
+				})
+			) : (
+				<h1 className='text-align-center'>No liked post</h1>
+			)}
 		</div>
 	);
 };
+
 export { LikedPostPage };
