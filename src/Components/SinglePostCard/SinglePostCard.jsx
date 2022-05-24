@@ -114,7 +114,7 @@ const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp, pos
 
 			{image && (
 				<div className='post-image'>
-					<img src={image} loading='lazy' alt={caption} />
+					<img src={image} alt={caption} />
 				</div>
 			)}
 

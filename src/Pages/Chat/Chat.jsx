@@ -14,6 +14,11 @@ export const ChatPage = () => {
 	const closeChat = () => {
 		setSelectedChat(null);
 	};
+	const getAnimationDelay = (index) => {
+		const delay = 150,
+			maxDelay = 700;
+		return `${index * delay < maxDelay ? index * delay : maxDelay}ms`;
+	};
 	useEffect(() => {
 		let unSub;
 		if (authUser) {
@@ -31,18 +36,24 @@ export const ChatPage = () => {
 		<div className='app-content'>
 			<h1>All Chats</h1>
 			<div className='chat-screen'>
-				{chats.map((message) => {
-					const userDetails = getUserDetails(message.user[1] === authUser?.uid ? message.user[0] : message.user[1], allUsers);
-					const { displayName, photoURL } = userDetails;
-					return (
-						<>
-							<div className='single-chat-tile' onClick={() => setSelectedChat({ chatId: message.chatId, photoURL, displayName })}>
+				{chats.length > 0 ? (
+					chats.map((message, index) => {
+						const userDetails = getUserDetails(message.user[1] === authUser?.uid ? message.user[0] : message.user[1], allUsers);
+						const { displayName, photoURL } = userDetails;
+						return (
+							<div
+								className='single-chat-tile'
+								style={{ '--delay': getAnimationDelay(index) }}
+								onClick={() => setSelectedChat({ chatId: message.chatId, photoURL, displayName })}
+							>
 								<img src={photoURL} alt={displayName} class='avatar avatar-md' />
 								<p>{displayName}</p>
 							</div>
-						</>
-					);
-				})}
+						);
+					})
+				) : (
+					<h1 className='text-align-center'>No chats</h1>
+				)}
 				{selectedChat && (
 					<ConversationScreen
 						chatId={selectedChat.chatId}
