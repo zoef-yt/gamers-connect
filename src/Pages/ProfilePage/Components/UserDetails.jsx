@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { EditIcon } from '../../../Assets/AllSVG';
 import { editUserProfileImage, followUser, getCollectionsSize, unfollowUser } from '../../../Firebase/FirebaseFirestore';
-import { setAuthUser } from '../../../store/Auth/AuthSlice';
+import { setAuthUser, setIsLoading } from '../../../store/Auth/AuthSlice';
 import { openModal } from '../../../store/Modal/ModalSlice';
 import { startChatHandler } from '../../Chat/utils';
 
@@ -14,10 +14,12 @@ const UserDetails = ({ uid }) => {
 	const { allPosts } = useSelector((store) => store.allPosts);
 	const { allUsers } = useSelector((store) => store.allUsers);
 	const changeImageHandler = async (e) => {
+		dispatch(setIsLoading(true));
 		const newUrl = await editUserProfileImage(authUser.uid, e.target.files[0]);
 		if (newUrl) {
 			dispatch(setAuthUser({ ...authUser, photoURL: newUrl }));
 		}
+		dispatch(setIsLoading(false));
 	};
 
 	const [posts, setPosts] = useState([]);
@@ -44,7 +46,7 @@ const UserDetails = ({ uid }) => {
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [allPosts, uid, allUsers]);
+	}, [allPosts, uid, allUsers, authUser]);
 
 	useEffect(() => {
 		if (uid) {
