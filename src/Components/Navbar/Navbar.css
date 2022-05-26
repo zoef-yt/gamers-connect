@@ -160,7 +160,7 @@
 	display: block;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1071px) {
 	.sidebar {
 		right: -20rem;
 		transition: all 0.3s ease-in;

@@ -10,7 +10,6 @@ const startListeners = (dispatch) => {
 	authChangeListener(dispatch);
 	usersListener(dispatch);
 	postsListener(dispatch);
-	// chatListener(dispatch);
 };
 
 const authChangeListener = (dispatch) => {

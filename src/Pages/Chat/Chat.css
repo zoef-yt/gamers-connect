@@ -54,28 +54,10 @@
 	background-color: var(--colour-secondary-second);
 	border-radius: 1rem;
 	box-shadow: var(--box-shadow-level-3);
-	animation-name: conversation-screen-in;
-	animation-duration: 300ms;
-	animation-fill-mode: forwards;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: stretch;
-}
-
-@keyframes conversation-screen-in {
-	0% {
-		opacity: 0;
-		transform: translateX(100%);
-	}
-	80% {
-		opacity: 1;
-		transform: translateX(-5%);
-	}
-	100% {
-		opacity: 1;
-		transform: translateX(0);
-	}
 }
 
 .conversation-screen-header {

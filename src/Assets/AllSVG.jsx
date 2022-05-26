@@ -280,6 +280,64 @@ function ChatIcon(props) {
 	);
 }
 
+const LoaderSvg = (props) => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		style={{
+			margin: 'auto',
+			background: '0 0',
+			display: 'block',
+			shapeRendering: 'auto',
+		}}
+		width={200}
+		height={200}
+		viewBox='0 0 100 100'
+		preserveAspectRatio='xMidYMid'
+		{...props}
+	>
+		<circle
+			cx={50}
+			cy={50}
+			r={32}
+			strokeWidth={8}
+			stroke='#93dbe9'
+			strokeDasharray='50.26548245743669 50.26548245743669'
+			fill='none'
+			strokeLinecap='round'
+		>
+			<animateTransform attributeName='transform' type='rotate' dur='1s' repeatCount='indefinite' keyTimes='0;1' values='0 50 50;360 50 50' />
+		</circle>
+		<circle
+			cx={50}
+			cy={50}
+			r={23}
+			strokeWidth={8}
+			stroke='#689cc5'
+			strokeDasharray='36.12831551628262 36.12831551628262'
+			strokeDashoffset={36.128}
+			fill='none'
+			strokeLinecap='round'
+		>
+			<animateTransform attributeName='transform' type='rotate' dur='1s' repeatCount='indefinite' keyTimes='0;1' values='0 50 50;-360 50 50' />
+		</circle>
+	</svg>
+);
+
+function LeftChevronIcon(props) {
+	return (
+		<svg width='25' height='25' viewBox='0 0 24 24' {...props}>
+			<path fill='currentColor' d='m14 18l-6-6l6-6l1.4 1.4l-4.6 4.6l4.6 4.6Z'></path>
+		</svg>
+	);
+}
+
+function RightChevronIcon(props) {
+	return (
+		<svg width='25' height='25' viewBox='0 0 24 24' {...props}>
+			<path fill='currentColor' d='M9.4 18L8 16.6l4.6-4.6L8 7.4L9.4 6l6 6Z'></path>
+		</svg>
+	);
+}
 export {
 	SunIcon,
 	HalfMoonIcon,
@@ -304,4 +362,7 @@ export {
 	DeleteIcon,
 	DoneIcon,
 	ChatIcon,
+	LoaderSvg,
+	LeftChevronIcon,
+	RightChevronIcon,
 };

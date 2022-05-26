@@ -43,20 +43,26 @@ const SearchBar = () => {
 		<div className='relative searchbar-holder'>
 			<input type='search' className='text-field' placeholder='Search' value={search} onChange={(e) => setSearch(e.target.value)} />
 			<div className='search-data'>
-				{searchedData.map((user) => {
-					return (
-						<div
-							key={user.uid}
-							className='flex-row'
-							onClick={() => {
-								navigate(`/profile/${user.uid}`);
-							}}
-						>
-							<img src={user.photoURL} alt={user.displayName} />
-							<p>{user.displayName}</p>
-						</div>
-					);
-				})}
+				{searchedData.length > 0 ? (
+					searchedData.map((user) => {
+						return (
+							<div
+								key={user.uid}
+								className='flex-row'
+								onClick={() => {
+									navigate(`/profile/${user.uid}`);
+								}}
+							>
+								<img src={user.photoURL} alt={user.displayName} />
+								<p>{user.displayName}</p>
+							</div>
+						);
+					})
+				) : (
+					<div key={'No user'} className='flex-row'>
+						<p>No user found.</p>
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from './store/Theme/ThemeSlice';
 import ModalComponent from './Components/Modal/Modal';
 import { startListeners, startUserDetailListener } from './Firebase/FirebaseListeners';
+import { LoaderSvg } from './Assets/AllSVG';
 function App() {
 	const dispatch = useDispatch();
 
-	const { authUser } = useSelector((store) => store.auth);
+	const { authUser, isLoading } = useSelector((store) => store.auth);
 	useEffect(() => {
 		dispatch(setTheme());
 		startListeners(dispatch);
@@ -24,6 +25,7 @@ function App() {
 	}, [authUser]);
 	return (
 		<div className='app'>
+			{isLoading && <Loader />}
 			<ModalComponent />
 			<Navbar />
 			<AppRoutes />
@@ -33,3 +35,11 @@ function App() {
 }
 
 export { App };
+
+const Loader = () => {
+	return (
+		<div className='global-loader'>
+			<LoaderSvg />
+		</div>
+	);
+};

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { SinglePostCard } from '../../Components';
+import { CreateNewPostBtn } from '../../Components/CreateNewPostBtn';
 import '../Home/HomePage.css';
 import './ExplorePage.css';
 
@@ -26,6 +27,8 @@ export const ExplorePage = () => {
 	};
 	return (
 		<div className='app-content'>
+			<CreateNewPostBtn />
+
 			<div>
 				<h1 className='text-align-center'>Explore Page</h1>
 

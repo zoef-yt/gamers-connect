@@ -58,7 +58,7 @@ const AllPostComments = ({ closeComments, commentSection, photoURL, displayName,
 			{allComments.length > 0 ? (
 				allComments.map((comment) => {
 					const { comment: commentText, from, timestamp } = comment;
-					return <SingleComment comment={commentText} uid={from} timestamp={timestamp} />;
+					return <SingleComment key={timestamp.seconds} comment={commentText} uid={from} timestamp={timestamp} />;
 				})
 			) : (
 				<h1>No Comments</h1>

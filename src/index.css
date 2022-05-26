@@ -92,6 +92,15 @@
 	cursor: pointer;
 	aspect-ratio: unset;
 	z-index: var(--z-index-card-level-2);
+	animation: fab-animation 0.3s;
+}
+@keyframes fab-animation {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
 }
 
 .display-none {
@@ -111,7 +120,18 @@
 }
 .btn-disabled {
 	cursor: not-allowed;
-	background-color: var(--z-index-modal-level);
+}
+.global-loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: var(--z-index-modal-level);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 @media screen and (max-width: 768px) {

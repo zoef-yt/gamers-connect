@@ -6,10 +6,7 @@
 	width: 100%;
 	height: min-content;
 	scroll-snap-type: x mandatory;
-}
-.who-to-follow-div::-webkit-scrollbar {
-	display: none;
-	/* for Chrome, Safari, and Opera */
+	scroll-behavior: smooth;
 }
 
 .who-to-follow-card {
@@ -41,6 +38,7 @@
 	padding: 1rem;
 	margin: auto 1rem;
 }
+
 .user-details p {
 	width: 13ch;
 	display: block;
@@ -48,6 +46,29 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
 .user-details .btn {
 	width: 100%;
+}
+
+.div-scroll-btn {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 4rem;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+	border-radius: 50%;
+	width: 4rem;
+	background-color: var(--colour-secondary);
+}
+
+.div-scroll-btn.right {
+	right: 1rem;
+}
+
+.div-scroll-btn.left {
+	left: 1rem;
 }
