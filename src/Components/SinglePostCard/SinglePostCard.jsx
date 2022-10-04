@@ -59,7 +59,13 @@ const SinglePostCard = ({ caption, image, uid, index = 0, postId, timestamp, pos
 	useEffect(() => {
 		setUserInfo(allUsers.find((user) => user.uid === uid));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [allUsers]);
+
+	useEffect(() => {
+		setEdit({ isEditing: false, caption: caption });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [caption]);
+
 	const dateOptions = {
 		timeStyle: 'short',
 		dateStyle: 'medium',

@@ -66,11 +66,20 @@ export const CreatePostsCard = () => {
 						rows='3'
 						cols='22'
 						maxLength='250'
+						autoFocus
 					/>
 				</label>
 
 				<label htmlFor='imageHolder'>
-					<input id='imageHolder' name='image' type='file' className='display-none' placeholder='Image' onChange={imageChangeHandler} />
+					<input
+						id='imageHolder'
+						name='image'
+						type='file'
+						accept='image/*'
+						className='display-none'
+						placeholder='Image'
+						onChange={imageChangeHandler}
+					/>
 					{createPost.image ? 'Image Preview' : 'Add Image'}
 					<div className='image-holder text-field'>
 						{createPost.image ? (

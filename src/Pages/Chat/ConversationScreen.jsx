@@ -8,6 +8,7 @@ export const ConversationScreen = ({ chatId, photoURL, displayName, closeChat })
 	const { authUser } = useSelector((state) => state.auth);
 	const { allUsers } = useSelector((state) => state.allUsers);
 	const scrollBar = useRef(null);
+
 	useEffect(() => {
 		const unSub = onSnapshot(query(collection(db, `chats/${chatId}/messages`), orderBy('timestamp', 'asc')), (snapshot) => {
 			setMessages(snapshot.docs.map((doc) => doc.data()));
@@ -70,7 +71,13 @@ export const ConversationScreen = ({ chatId, photoURL, displayName, closeChat })
 			</div>
 
 			<div className='send-message-container'>
-				<input value={userText} className='text-field' placeholder='Type something epic' onChange={(e) => setUserText(e.target.value)} />
+				<input
+					value={userText}
+					className='text-field'
+					placeholder='Type something epic'
+					onChange={(e) => setUserText(e.target.value)}
+					autoFocus
+				/>
 				<button className='btn btn-primary' onClick={sendMessage}>
 					Send
 				</button>
